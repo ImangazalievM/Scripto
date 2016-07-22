@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=620, user-scalable=no">
+    <link rel="stylesheet" href="test.css"/>
+
+    <script src="./scripto/scripto.js"></script>
+    <script src="interfaces/android_interface.js"></script>
+    <script src="interfaces/preferences_interface.js"></script>
+    <script src="test.js"></script>
+</head>
+<body>
+
+
+    <label>Name:</label>
+    <input id="name_field" type="text" size="15" maxlength="15"><br/>
+    <label>Surname</label>
+    <input id="surname_field" type="text" size="15" maxlength="15"><br/>
+    <label>Age:</label>
+    <input id="age_field" type="text" size="15" maxlength="15"><br/>
+    <label>Height:</label>
+    <input id="height_field" type="text" size="15" maxlength="15"><br/><br/>
+    <label>Married:</label>
+    <input id="married_checkbox" type="checkbox"><br/><br/>
+    <button onclick="saveUserData()">Save</button>
+
+</body>
+</html>

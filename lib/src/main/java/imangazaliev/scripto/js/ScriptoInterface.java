@@ -22,12 +22,12 @@ public class ScriptoInterface {
     private boolean annotationProtectionEnabled;
 
     public ScriptoInterface(Scripto scripto, Object jsInterface) {
-        this.scripto = scripto;
-        this.javaScriptInterface = jsInterface;
+        this(scripto, jsInterface, new ScriptoInterfaceConfig());
     }
 
-    public void enableAnnotationProtection(boolean annotationProtectionEnabled) {
-        this.annotationProtectionEnabled = annotationProtectionEnabled;
+    public ScriptoInterface(Scripto scripto, Object jsInterface, ScriptoInterfaceConfig config) {
+        this.scripto = scripto;
+        this.javaScriptInterface = jsInterface;
     }
 
     @JavascriptInterface

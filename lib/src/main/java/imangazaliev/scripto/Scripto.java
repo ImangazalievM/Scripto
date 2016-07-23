@@ -9,6 +9,7 @@ import imangazaliev.scripto.converter.JavaScriptConverter;
 import imangazaliev.scripto.converter.JavaConverter;
 import imangazaliev.scripto.java.ScriptProxy;
 import imangazaliev.scripto.js.ScriptoInterface;
+import imangazaliev.scripto.js.ScriptoInterfaceConfig;
 import imangazaliev.scripto.utils.ScriptoUtils;
 
 /**
@@ -69,6 +70,10 @@ public class Scripto {
 
 	public void addInterface(String tag, Object obj) {
 		webView.addJavascriptInterface(new ScriptoInterface(this, obj), tag);
+	}
+
+	public void addInterface(String tag, Object obj, ScriptoInterfaceConfig config) {
+		webView.addJavascriptInterface(new ScriptoInterface(this, obj, config), tag);
 	}
 
 	public void removeInterface(String tag) {

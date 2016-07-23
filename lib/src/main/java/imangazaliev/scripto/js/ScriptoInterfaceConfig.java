@@ -8,8 +8,9 @@ public class ScriptoInterfaceConfig {
         annotationProtectionEnabled = false;
     }
 
-    public void enableAnnotationProtection(boolean annotationProtectionEnabled) {
+    public ScriptoInterfaceConfig enableAnnotationProtection(boolean annotationProtectionEnabled) {
         this.annotationProtectionEnabled = annotationProtectionEnabled;
+        return this;
     }
 
     public boolean isAnnotationProtectionEnabled() {

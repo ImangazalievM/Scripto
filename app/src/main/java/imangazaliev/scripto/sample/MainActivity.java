@@ -7,6 +7,7 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 import imangazaliev.scripto.Scripto;
+import imangazaliev.scripto.js.ScriptoInterfaceConfig;
 import imangazaliev.scripto.sample.interfaces.AndroidInterface;
 import imangazaliev.scripto.sample.interfaces.PreferencesInterface;
 import imangazaliev.scripto.sample.scripts.UserInfoScript;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         WebView webView = (WebView) findViewById(R.id.web_view);
 
         scripto = new Scripto.Builder(webView).build();
-        scripto.addInterface("Android", new AndroidInterface(this));
+        scripto.addInterface("Android", new AndroidInterface(this), new ScriptoInterfaceConfig().enableAnnotationProtection(true));
         scripto.addInterface("Preferences", new PreferencesInterface(this));
         userInfoScript = scripto.create(UserInfoScript.class);
 

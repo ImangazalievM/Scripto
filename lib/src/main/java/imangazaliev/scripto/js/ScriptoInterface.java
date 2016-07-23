@@ -28,6 +28,7 @@ public class ScriptoInterface {
     public ScriptoInterface(Scripto scripto, Object jsInterface, ScriptoInterfaceConfig config) {
         this.scripto = scripto;
         this.javaScriptInterface = jsInterface;
+        annotationProtectionEnabled = config.isAnnotationProtectionEnabled();
     }
 
     @JavascriptInterface

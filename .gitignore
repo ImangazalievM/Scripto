@@ -1,3 +1,7 @@
+/gradle.properties
+/gradlew
+/gradlew.bat
+/.idea
 /bintrayup.bat
 *.iml
 .gradle

@@ -25,5 +25,4 @@ dependencies {
     compile project(':lib')
 
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.github.imangazalievm:formvalidator:1.0.2'
 }

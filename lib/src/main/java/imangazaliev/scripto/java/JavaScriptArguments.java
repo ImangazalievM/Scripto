@@ -23,7 +23,7 @@ public class JavaScriptArguments {
         JavaScriptConverter javaScriptConverter = scripto.getJavaScriptConverter();
         String[] resultArgs = new String[argsObjects.length];
 
-        for (int i =0; i < argsObjects.length; i++) {
+        for (int i = 0; i < argsObjects.length; i++) {
             Object argument = argsObjects[i];
             //конвертируем аргумент в строку
             if (argument == null) {
@@ -45,7 +45,7 @@ public class JavaScriptArguments {
 
     public String getArguments() {
         String resultArgsString = "";
-        for (int i =0; i < stringArgs.length; i++) {
+        for (int i = 0; i < stringArgs.length; i++) {
             //если аргумент не первый, добавляем запятую
             resultArgsString += (i == 0) ? stringArgs[i] : "," + stringArgs[i];
         }

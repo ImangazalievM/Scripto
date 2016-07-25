@@ -7,6 +7,9 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 import imangazaliev.scripto.Scripto;
+import imangazaliev.scripto.ScriptoPrepareListener;
+import imangazaliev.scripto.java.ScriptoErrorCallback;
+import imangazaliev.scripto.java.ScriptoResponseCallback;
 import imangazaliev.scripto.js.ScriptoInterfaceConfig;
 import imangazaliev.scripto.sample.interfaces.AndroidInterface;
 import imangazaliev.scripto.sample.interfaces.PreferencesInterface;
@@ -30,21 +33,32 @@ public class MainActivity extends AppCompatActivity {
         scripto.addInterface("Preferences", new PreferencesInterface(this));
         userInfoScript = scripto.create(UserInfoScript.class);
 
-        scripto.onPrepared(this::onScriptoPrepared);
+       scripto.onPrepared(new ScriptoPrepareListener() {
+           @Override
+           public void onScriptoPrepared() {
+               userInfoScript.loadUserData();
+           }
+       });
 
 
         String html = AssetsReader.readFileAsText(this, "test.html");
         webView.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
     }
 
-    private void onScriptoPrepared() {
-        userInfoScript.loadUserData();
-    }
-
     public void getUserData(View view) {
         userInfoScript.getUserData()
-                .onResponse(user -> Toast.makeText(MainActivity.this, user.getUserInfo(), Toast.LENGTH_LONG).show())
-                .onError(error -> Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show())
+                .onResponse(new ScriptoResponseCallback<User>() {
+                    @Override
+                    public void onResponse(User user) {
+                        Toast.makeText(MainActivity.this, user.getUserInfo(), Toast.LENGTH_LONG).show();
+                    }
+                })
+                .onError(new ScriptoErrorCallback() {
+                    @Override
+                    public void onError(Exception error) {
+                        Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .call();
     }
 

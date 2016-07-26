@@ -136,7 +136,7 @@ function showToastMessage(text) {
 showToastMessage("My super message");
 ```
 
-Точно также как и в Java мы можем использовать коллбеки:
+Точно также, как и в Java мы можем использовать коллбеки:
 ```java
 public String showToastMessage(String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();

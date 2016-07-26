@@ -1,17 +1,21 @@
 # Scripto
-Библиотека для удобного вызова JS-функций из Java и наоборот.
+[ ![Download](https://api.bintray.com/packages/imangazaliev/maven/scripto/images/download.svg) ](https://bintray.com/imangazaliev/maven/quickmenu/_latestVersion)
 
-## Подключение библиотеки
+[Русская версия (Russian version)](README-RU.md)
+
+Library for easy call JS functions from Java.
+
+## Setup
 
 ```gradle
 compile 'com.github.imangazalievm:scripto:0.5.1'
 ```
 
-# Использование библиотеки
+# Using the library
 
-### Вызов JS-функций из Java
+### Calling JS-functions from Java
 
-У нас есть JS-файл с некоторыми функциями:
+We have a JS-file with some functions:
 
 ```javascript
 function setLogin(login) {
@@ -23,14 +27,14 @@ function getLogin() {
 }
 ```
 
-Скопируйте файл ```scripto.js``` из примера в папку assets и подключите через html:
+Copy the file ```scripto.js``` from example project into assets folder and add in html:
 
 ```java
 <script src="scripto.js"></script>
 ```
-Скрипт обязательно подключать первым, перед подключением остальных скриптов.
+The script should be loaded before other scripts.
 
-Для вызова функций нам нужно создать Java-интерфейс с описанием JS-функций:
+To call a function we should create Java-interface with JS-functions description:
 
 ```java
 public interface LoginScript {
@@ -42,18 +46,17 @@ public interface LoginScript {
 }
 ```
 
-Методы обязательно должны возвращать ScriptoFunctionCall. В параметрах ScriptoFunctionCall мы указываем тип, возвращаемый JS-функцией. В нашем случае первая функция ничего не возвращает (Void), а вторая возвращает строку (Sctring).
+Methods should be return ScriptoFunctionCall. In the parameters of ScriptoFunctionCall we specify type of JS-function response. In our case the first function returns nothing (Void), and the second retutns text (String).
 
-Далее нам нужно связать Java-интерфейс и JS-файл:
+Then we should link Java-interface and JS-file:
 ```java
 WebView webView = ...;
 Scripto scripto = new Scripto.Builder(webView).build();
 LoginScript loginScript = scripto.create(LoginScript.class);
 ```
+Scripts should be linked to interfaces before the page is loaded.
 
-Скрипты обязательно должны быть связаны с интерфейсами до загрузки страницы.
-
-Мы не можем сразу использовать наши скрипт, т. к. нам нужно дождаться полной загрузки страницы. Для этого нужно установить слушатель:
+We can't use our script, because we need to wait for full page load. For this we need to set a listener:
 
 ```java
 scripto.onPrepared(new ScriptoPrepareListener() {
@@ -64,7 +67,7 @@ scripto.onPrepared(new ScriptoPrepareListener() {
 });
 ```
 
-Для получения данных из функции используйте следующий синтаксис:
+To obtain data from a function Use the following syntax:
 
 ```java
 loginScript.getLogin()
@@ -72,21 +75,21 @@ loginScript.getLogin()
     .call();
 ```
 
-Также мы можем обрабатывать ошибки, произошедшие в JS-коде:
+Also we can handle errors, caused in JS-code:
 
 ```java
 .onError(error -> Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show())
 ```
 
-Для конвертации пользовательских типов данных из JSON используется библиотека GSON.
+For the conversion of user-defined data type from JSON used GSON library.
 
-Если вы хотите получить "голый" JSON, то обязательно используйте класс RawsReponse:
+If you want to get raw JSON, then necessarily to use class RawsReponse:
 
 ```java
  ScriptoFunctionCall<RawResponse> getJson();
 ```
 
-Получаем JSON:
+Receiving JSON:
 
 ```java
 loginScript.getJson()
@@ -94,9 +97,9 @@ loginScript.getJson()
     .call();
 ```
 
-### Вызов Java-методов из JS
+### Calling Java-methods from JavaScript
 
-Вызов Java-методов из Java скрипт очень сильно похож, на вызов с помощью JavaSсriptInterface. Создайте Java-класс, который будет выступать в качестве JS-интерфейса:
+Calling Java-methods from JavaScript very similar to default JavaScriptInterface. Create Java-class, which will act as JS-inteface:
 
 ```java
 public class AndroidInterface {
@@ -112,15 +115,15 @@ public class AndroidInterface {
     }
 }
 ```
-Обязательным условием корректной работы интерфейса является, то чтобы в нем не было методов с одинаковыми именами. В ином случае библиотека выдаст сообщение об ошибке. Также нам не нужно ставить над методами аннотацию ```@JavaScriptInterface```.
+For correct work of JS-interface must not contain methods with the same name. Otherwiseе library will throws a exception. Also We don't need to set ```@JavaScriptInterface``` annotaion.
 
-Добавляем интерфейс:
+Add interface:
 
 ```java
 scripto.addInterface("Android", new AndroidInterface(context));
 ```
 
-Для вызова метода ```showToastMessage``` нам нужно создать одноименную JS-функцию:
+To call ```showToastMessage``` method we need to create JS-function with the same name:
 
 ```javascript
 function showToastMessage(text) {
@@ -128,22 +131,22 @@ function showToastMessage(text) {
 };
 ```
 
-В ней мы вызываем специальную функцию из нашей библиотеки и передаем ей название метода и аргументы функции.
+In the function we call special library function  and pass name of JS-interface  and arguments.
 
-Вызываем метод из JavaScript:
+Calling the method from JavaScript:
 
 ```javascript
 showToastMessage("My super message");
 ```
 
-Точно также как и в Java мы можем использовать коллбеки:
+Just as in Java we can use callbacks:
 ```java
 public String showToastMessage(String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 }
 ```
 
-Вызываем метод из JS:
+Calling the method from JavaScript:
 
 ```javascript
 showToastMessage("My super message", function(responseString) {
@@ -151,16 +154,17 @@ showToastMessage("My super message", function(responseString) {
 });
 ```
 
-Если вам нужно передать из JavaScript пользовательский тип данных, сконвертируйте его в JSON при помощи ```JSON.stringify(object)```.
+If you wont to pass  user-defined data type from JavaScript, convert your data to JSON via ```JSON.stringify(object)```.
 
-Если вы хотите защитить методы от несанкционированного вызова, то вы можете использовать защиту при помощи аннотации ```@ScriptoSecure```:
+If you need to protect methods from an unauthorized call, then you can protect them  ```@ScriptoSecure``` annotation:
 
 ```java
 ScriptoInterfaceConfig config = new ScriptoInterfaceConfig().enableAnnotationProtection(true);
 scripto.addInterface("Android", new AndroidInterface(this), config);
 ```
 
-Не забудьте установить аннотацию над методом:
+
+Do not forget to set an annotation on the method:
 
 ```java
 @ScriptoSecure
@@ -169,7 +173,7 @@ public void showToastMessage(String text) {
 }
 ```
 
-## Лицензия
+## License
 
 The MIT License
 

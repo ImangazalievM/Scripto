@@ -37,7 +37,7 @@ function getLogin() {
 ```java
 public interface LoginScript {
 
-    ScriptoFunctionCall<Void> setLogin(String text);
+    ScriptoFunctionCall<Void> setLogin(String login);
 
     ScriptoFunctionCall<String> getLogin();
 

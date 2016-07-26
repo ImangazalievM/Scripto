@@ -96,7 +96,7 @@ loginScript.getJson()
 
 ### Вызов Java-методов из JS
 
-Вызов Java-методов из Java скрипт очень сильно похож, на вызов с помощью JavaSсriptInterface. Создайте Java-класс, который будет выступать в качестве JS-интерфейса:
+Вызов Java-методов из JavaScript очень сильно похож, на вызов с помощью JavaSсriptInterface. Создайте Java-класс, который будет выступать в качестве JS-интерфейса:
 
 ```java
 public class AndroidInterface {

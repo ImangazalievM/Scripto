@@ -115,7 +115,7 @@ public class AndroidInterface {
     }
 }
 ```
-For correct work of JS-interface must not contain methods with the same name. Otherwiseе library will throws a exception. Also We don't need to set ```@JavaScriptInterface``` annotaion.
+For correct work of JS-interface must not contain methods with the same name. Otherwiseе library will throws an exception. Also We don't need to set ```@JavaScriptInterface``` annotaion.
 
 Add interface:
 

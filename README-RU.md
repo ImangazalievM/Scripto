@@ -142,6 +142,7 @@ showToastMessage("My super message");
 ```java
 public String showToastMessage(String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+        return "My super response";
 }
 ```
 

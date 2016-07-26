@@ -3,7 +3,7 @@
 
 [Русская версия (Russian version)](README-RU.md)
 
-Library for easy call JS functions from Java.
+Library for easy call JS-functions from Java.
 
 # Setup
 
@@ -46,7 +46,7 @@ public interface LoginScript {
 }
 ```
 
-Methods should be return ScriptoFunctionCall. In the parameters of ScriptoFunctionCall we specify type of JS-function response. In our case the first function returns nothing (Void), and the second retutns text (String).
+Methods should be return ScriptoFunctionCall. In the parameters of ScriptoFunctionCall we specify type of JS-function response. In our case the first function returns nothing (Void), and the second returns text (String).
 
 Then we should link Java-interface and JS-file:
 ```java

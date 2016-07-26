@@ -94,7 +94,7 @@ loginScript.getJson()
     .call();
 ```
 
-### Вызов Java-методов из JS
+### Вызов Java-методов из JavaScript
 
 Вызов Java-методов из JavaScript очень сильно похож, на вызов с помощью JavaSсriptInterface. Создайте Java-класс, который будет выступать в качестве JS-интерфейса:
 
@@ -143,7 +143,7 @@ public String showToastMessage(String text) {
 }
 ```
 
-Вызываем метод из JS:
+Вызываем метод из JavaScript:
 
 ```javascript
 showToastMessage("My super message", function(responseString) {

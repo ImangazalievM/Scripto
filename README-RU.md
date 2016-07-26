@@ -1,7 +1,7 @@
 # Scripto
 Библиотека для удобного вызова JS-функций из Java и наоборот.
 
-## Подключение библиотеки
+# Подключение библиотеки
 
 ```gradle
 compile 'com.github.imangazalievm:scripto:0.5.1'

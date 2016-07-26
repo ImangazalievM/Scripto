@@ -67,7 +67,7 @@ scripto.onPrepared(new ScriptoPrepareListener() {
 });
 ```
 
-To obtain data from a function Use the following syntax:
+To obtain data from a function use the following syntax:
 
 ```java
 loginScript.getLogin()

@@ -115,7 +115,7 @@ public class AndroidInterface {
     }
 }
 ```
-For correct work of JS-interface must not contain methods with the same name. Otherwiseе library will throws an exception. Also We don't need to set ```@JavaScriptInterface``` annotaion.
+For correct work of JS-interface must not contain methods with the same name. Otherwisе library will throws an exception. Also we don't need to set ```@JavaScriptInterface``` annotation.
 
 Add interface:
 
@@ -143,6 +143,7 @@ Just as in Java we can use callbacks:
 ```java
 public String showToastMessage(String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+        return "My super response";
 }
 ```
 
@@ -154,7 +155,7 @@ showToastMessage("My super message", function(responseString) {
 });
 ```
 
-If you wont to pass  user-defined data type from JavaScript, convert your data to JSON via ```JSON.stringify(object)```.
+If you want to pass  user-defined data type from JavaScript, convert your data to JSON via ```JSON.stringify(object)```.
 
 If you need to protect methods from an unauthorized call, then you can protect them  ```@ScriptoSecure``` annotation:
 

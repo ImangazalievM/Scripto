@@ -1,4 +1,6 @@
 # Scripto
+[ ![Download](https://api.bintray.com/packages/imangazaliev/maven/scripto/images/download.svg) ](https://bintray.com/imangazaliev/maven/quickmenu/_latestVersion)
+
 Библиотека для удобного вызова JS-функций из Java и наоборот.
 
 # Подключение библиотеки

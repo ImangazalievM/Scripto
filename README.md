@@ -83,7 +83,7 @@ Also we can handle errors, caused in JS-code:
 
 For the conversion of user-defined data type from JSON used GSON library.
 
-If you want to get raw JSON, then necessarily to use class RawsReponse:
+If you want to get raw JSON, then necessarily to use class RawReponse:
 
 ```java
  ScriptoFunctionCall<RawResponse> getJson();

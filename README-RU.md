@@ -80,7 +80,7 @@ loginScript.getLogin()
 
 Для конвертации пользовательских типов данных из JSON используется библиотека GSON.
 
-Если вы хотите получить "голый" JSON, то обязательно используйте класс RawsReponse:
+Если вы хотите получить "голый" JSON, то обязательно используйте класс RawReponse:
 
 ```java
  ScriptoFunctionCall<RawResponse> getJson();

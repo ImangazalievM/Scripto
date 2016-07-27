@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.ScriptoPrepareListener;
+import imangazaliev.scripto.java.JavaScriptException;
 import imangazaliev.scripto.java.ScriptoErrorCallback;
 import imangazaliev.scripto.java.ScriptoResponseCallback;
 import imangazaliev.scripto.js.ScriptoInterfaceConfig;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .onError(new ScriptoErrorCallback() {
                     @Override
-                    public void onError(Exception error) {
+                    public void onError(JavaScriptException error) {
                         Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 })

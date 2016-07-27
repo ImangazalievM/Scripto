@@ -6,8 +6,6 @@ function loadUserData() {
         document.getElementById('age_field').value = user.age;
         document.getElementById('height_field').value = user.height;
         document.getElementById('married_checkbox').checked = user.married;
-
-        console.log(userJson);
     });
 }
 

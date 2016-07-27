@@ -52,7 +52,7 @@ dependencies {
 publish {
     groupId = 'com.github.imangazalievm'
     artifactId = 'scripto'
-    publishVersion = '0.5.1'
+    publishVersion = '0.5.2'
     desc = 'Библиотека для удобного вызова JS функций из Java и наоборот'
     licences = ['MIT']
     website = 'https://github.com/ImangazalievM/Scripto'

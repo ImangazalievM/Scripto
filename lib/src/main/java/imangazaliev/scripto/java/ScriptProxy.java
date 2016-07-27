@@ -90,7 +90,7 @@ public class ScriptProxy implements InvocationHandler {
         if (callback == null && functionCall.isThrowOnError()) {
             throw new JavaScriptException(message);
         } else if (callback != null) {
-            callback.onError(new ScriptoException(message));
+            callback.onError(new JavaScriptException(message));
         }
     }
 

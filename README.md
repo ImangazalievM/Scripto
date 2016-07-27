@@ -8,7 +8,7 @@ Library for easy call JS-functions from Java.
 # Setup
 
 ```gradle
-compile 'com.github.imangazalievm:scripto:0.5.1'
+compile 'com.github.imangazalievm:scripto:0.5.2'
 ```
 
 # Using the library

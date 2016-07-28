@@ -1,5 +1,6 @@
 # Scripto
 [ ![Download](https://api.bintray.com/packages/imangazaliev/maven/scripto/images/download.svg) ](https://bintray.com/imangazaliev/maven/scripto/_latestVersion)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Scripto-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3983)
 
 [Русская версия (Russian version)](README-RU.md)
 

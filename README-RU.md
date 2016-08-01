@@ -147,6 +147,14 @@ public String showToastMessage(String text) {
 }
 ```
 
+Вместо метода ```call``` мы вызываем метод ```callWithCallback ```:
+
+```javascript
+function showToastMessage(text) {
+  Scripto.callWithCallback('Android', arguments);
+};
+```
+
 Вызываем метод из JavaScript:
 
 ```javascript

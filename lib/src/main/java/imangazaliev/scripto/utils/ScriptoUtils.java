@@ -8,6 +8,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import imangazaliev.scripto.java.ScriptoFunctionCall;
+import imangazaliev.scripto.js.ScriptoSecure;
 
 public class ScriptoUtils {
 
@@ -40,26 +41,25 @@ public class ScriptoUtils {
                 || (Short.class == type);
     }
 
-    public static boolean hasNull(Object[] objects) {
-        for (Object object : objects) {
-            if (object == null) {
-                return true;
-            }
+    public static Class<?> getCallResponseType(Method method) {
+        Type returnType = method.getReturnType();
+        Type returnGenericType = method.getGenericReturnType();
+        //метод обязательно должен возвращать ScriptoFunctionCall
+        if (!(returnGenericType instanceof ParameterizedType)
+                || !(method.getReturnType().isAssignableFrom(ScriptoFunctionCall.class))) {
+            throw new IllegalArgumentException("Call return type must be parameterized as ScriptoFunctionCall<Foo>" + (returnType == null) + " " + (returnGenericType == null));
         }
-        return false;
+
+        return (Class<?>) ((ParameterizedType) returnGenericType).getActualTypeArguments()[0];
     }
 
-    public static Class<?> getCallResponseType(Method method) {
-        Type returnType = method.getGenericReturnType();
-        //метод обязательно должен возвращать ScriptoFunctionCall
-        if (!(method.getReturnType().isAssignableFrom(ScriptoFunctionCall.class))) {
-            throw new IllegalArgumentException("Call return type must be parameterized as ScriptoFunctionCall<Foo>");
-        }
 
-        if (!(returnType instanceof ParameterizedType)) {
-            throw new IllegalArgumentException("Call return type must be parameterized as ScriptoFunctionCall<Foo>");
-        }
-        return (Class<?>) ((ParameterizedType) returnType).getActualTypeArguments()[0];
+    /**
+     * Проверяет наличие аннотации для защиты от несанкционированного вызова
+     */
+
+    public static boolean hasSecureAnnotation(Method method) {
+        return method.isAnnotationPresent(ScriptoSecure.class);
     }
 
     public static void runOnUi(Runnable task) {

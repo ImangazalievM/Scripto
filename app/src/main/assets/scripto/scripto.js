@@ -72,6 +72,6 @@ Scripto.generateCallbackId = function() {
 /*--------------------------------------------------*/
 
 //оповещаем java-библиотеку, о готовности к работе
-document.addEventListener('DOMContentLoaded', function() {
-    ScriptoInterface.onScriptoPrepared();
-}, false);
+ScriptoInterface.onScriptoPrepared();
+var event = new CustomEvent("ScriptoPrepared");
+document.dispatchEvent(event);

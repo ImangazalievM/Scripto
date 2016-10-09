@@ -9,21 +9,18 @@ public class StringUtils {
         char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         StringBuilder randomStringBuilder = new StringBuilder();
         Random random = new Random();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < stringLength; i++) {
             char c = chars[random.nextInt(chars.length)];
             randomStringBuilder.append(c);
         }
         return randomStringBuilder.toString();
     }
 
-    public static String randomStringNumeric(int stringLength) {
+    public static String randomNumericString(int stringLength) {
         Random generator = new Random();
         StringBuilder randomStringBuilder = new StringBuilder();
-        int randomLength = generator.nextInt(stringLength);
-        char tempChar;
-        for (int i = 0; i < randomLength; i++){
-            tempChar = (char) (generator.nextInt(96) + 32);
-            randomStringBuilder.append(tempChar);
+        for (int i = 0; i < stringLength; i++){
+            randomStringBuilder.append(generator.nextInt(9));
         }
         return randomStringBuilder.toString();
     }

@@ -17,11 +17,7 @@ public class JavaConverter {
     }
 
     public <T> T toObject(String json, Class<T> type) {
-        try {
             return gson.fromJson(json, type);
-        } catch (IllegalStateException e) {
-         throw new ScriptoException(String.format("Invalid JSON object: %s", json), e);
-        }
     }
 
 

@@ -3,15 +3,12 @@ package imangazaliev.scripto.js;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import imangazaliev.scripto.utils.ScriptoUtils;
-
 public class JavaArguments {
 
     private String raw;
     private JSONArray jsonArgsArray;
     private Class<?>[] argsTypes;
     private Object[] argsObjects;
-    private boolean hasNullArg;
 
     public JavaArguments(String jsonArgs) {
         try {
@@ -20,9 +17,9 @@ public class JavaArguments {
             throw new IllegalArgumentException("Invalid JSON arguments from JS!", e);
         }
 
+        this.raw = jsonArgs;
         this.argsTypes = initArgsTypes();
         this.argsObjects = initArgs();
-        this.hasNullArg = ScriptoUtils.hasNull(argsObjects);
     }
 
     public String getRaw() {
@@ -65,8 +62,5 @@ public class JavaArguments {
         return argsTypes;
     }
 
-    public boolean hasNullArg() {
-        return hasNullArg;
-    }
 
 }

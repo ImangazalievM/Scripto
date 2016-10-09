@@ -11,12 +11,25 @@ public class ScriptoFunction {
 
     private Scripto scripto;
     private final String proxyId;
-    private final String jsFunction;
+    final String jsFunction;
 
     public ScriptoFunction(Scripto scripto, Method method, Object[] args, String proxyId) {
         this.scripto = scripto;
         this.proxyId = proxyId;
         this.jsFunction = buildJavaScriptFunctionCall(method, args);
+    }
+
+    /**
+     * Строит строку вызова JS-функции
+     * @param method - название функции
+     * @param args - аогументы функции
+     * @return JS-код вызова функции с аргументами
+     */
+    private String buildJavaScriptFunctionCall(Method method, Object[] args) {
+        //если функция имеет callback убираем его из аргументов
+        JavaScriptArguments arguments = new JavaScriptArguments(scripto, args);
+        String functionTemplate = "%s(%s);";
+        return String.format(functionTemplate, method.getName(), arguments.getFormattedArguments());
     }
 
     /**
@@ -34,19 +47,6 @@ public class ScriptoFunction {
                 + "	 }"
                 + "})();";
         scripto.getWebView().loadUrl(jsCall);
-    }
-
-    /**
-     * Строит строку вызова JS-функции
-     * @param method - название функции
-     * @param args - аогументы функции
-     * @return JS-код вызова функции с аргументами
-     */
-    private String buildJavaScriptFunctionCall(Method method, Object[] args) {
-        //если функция имеет callback убираем его из аргументов
-        JavaScriptArguments arguments = new JavaScriptArguments(scripto, args);
-        String functionTemplate = "%s(%s);";
-        return String.format(functionTemplate, method.getName(), arguments.getArguments());
     }
 
 }

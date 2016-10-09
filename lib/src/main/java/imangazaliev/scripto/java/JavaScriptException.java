@@ -1,6 +1,8 @@
 package imangazaliev.scripto.java;
 
-public class JavaScriptException extends RuntimeException {
+import imangazaliev.scripto.ScriptoException;
+
+public class JavaScriptException extends ScriptoException {
 
     public JavaScriptException() {
     }

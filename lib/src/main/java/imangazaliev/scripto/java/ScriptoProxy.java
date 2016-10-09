@@ -2,6 +2,8 @@ package imangazaliev.scripto.java;
 
 import android.webkit.JavascriptInterface;
 
+import com.google.gson.JsonSyntaxException;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -11,17 +13,19 @@ import imangazaliev.scripto.ScriptoException;
 import imangazaliev.scripto.utils.ScriptoUtils;
 import imangazaliev.scripto.utils.StringUtils;
 
-public class ScriptProxy implements InvocationHandler {
+public class ScriptoProxy implements InvocationHandler {
 
     private Scripto scripto;
     private String proxyId;
     private HashMap<String, ScriptoFunctionCall> functionCalls;
 
-    public ScriptProxy(Scripto scripto) {
+    public ScriptoProxy(Scripto scripto) {
         this.scripto = scripto;
 
         functionCalls = new HashMap();
         proxyId = StringUtils.randomString(5);
+
+        //добавляем себя как интерфейс для приема коллбеков от JS
         scripto.getWebView().addJavascriptInterface(this, proxyId);
     }
 
@@ -33,9 +37,9 @@ public class ScriptProxy implements InvocationHandler {
         }
 
         ScriptoFunction scriptoFunction = new ScriptoFunction(scripto, method, args, proxyId);
-
         Class<?> returnType = ScriptoUtils.getCallResponseType(method);
-        String callCode = StringUtils.randomStringNumeric(5);
+        String callCode = StringUtils.randomNumericString(5);
+
         ScriptoFunctionCall scriptoFunctionCall = new ScriptoFunctionCall(scriptoFunction, returnType, callCode);
         functionCalls.put(callCode, scriptoFunctionCall);
 
@@ -53,6 +57,10 @@ public class ScriptProxy implements InvocationHandler {
     }
 
     private void onCallbackResponseUi(String callbackCode, String responseString) {
+        if (!functionCalls.containsKey(callbackCode)) {
+            return;
+        }
+
         ScriptoFunctionCall functionCall = functionCalls.remove(callbackCode);
         ScriptoResponseCallback callback = functionCall.getResponseCallback();
 
@@ -68,8 +76,12 @@ public class ScriptProxy implements InvocationHandler {
             //возвращаем ответ без конвертации
             callback.onResponse(new RawResponse(responseString));
         } else {
-            Object response = scripto.getJavaConverter().toObject(responseString, responseType);
-            callback.onResponse(response);
+            try {
+                Object response = scripto.getJavaConverter().toObject(responseString, responseType);
+                callback.onResponse(response);
+            } catch (JsonSyntaxException e) {
+                onError(functionCall, new ScriptoException("Ошибка при конвертации JSON из JS", e));
+            }
         }
     }
 
@@ -84,13 +96,20 @@ public class ScriptProxy implements InvocationHandler {
     }
 
     private void onCallbackErrorUi(String callbackCode, String message) {
-        ScriptoFunctionCall functionCall = functionCalls.remove(callbackCode);
-        ScriptoErrorCallback callback = functionCall.getErrorCallback();
+        if (!functionCalls.containsKey(callbackCode)) {
+            return;
+        }
 
+        ScriptoFunctionCall functionCall = functionCalls.remove(callbackCode);
+        onError(functionCall, new JavaScriptException(message));
+    }
+
+    private void onError(ScriptoFunctionCall functionCall, ScriptoException error) {
+        ScriptoErrorCallback callback = functionCall.getErrorCallback();
         if (callback == null && functionCall.isThrowOnError()) {
-            throw new JavaScriptException(message);
+            throw error;
         } else if (callback != null) {
-            callback.onError(new JavaScriptException(message));
+            callback.onError(error);
         }
     }
 

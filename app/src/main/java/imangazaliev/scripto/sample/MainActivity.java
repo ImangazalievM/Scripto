@@ -2,16 +2,19 @@ package imangazaliev.scripto.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Toast;
 
 import imangazaliev.scripto.Scripto;
+import imangazaliev.scripto.ScriptoException;
 import imangazaliev.scripto.ScriptoPrepareListener;
 import imangazaliev.scripto.java.JavaScriptException;
 import imangazaliev.scripto.java.ScriptoErrorCallback;
 import imangazaliev.scripto.java.ScriptoResponseCallback;
 import imangazaliev.scripto.js.ScriptoInterfaceConfig;
+import imangazaliev.scripto.js.ScriptoSecureException;
 import imangazaliev.scripto.sample.interfaces.AndroidInterface;
 import imangazaliev.scripto.sample.interfaces.PreferencesInterface;
 import imangazaliev.scripto.sample.scripts.UserInfoScript;
@@ -31,9 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
         scripto = new Scripto.Builder(webView).build();
         scripto.addInterface("Android", new AndroidInterface(this), new ScriptoInterfaceConfig().enableAnnotationProtection(true));
-        scripto.addInterface("Preferences", new PreferencesInterface(this));
+        scripto.addInterface("Preferences", new PreferencesInterface(this), new ScriptoInterfaceConfig());
         userInfoScript = scripto.create(UserInfoScript.class);
 
+        scripto.onError(new Scripto.ErrorHandler() {
+            @Override
+            public void onError(ScriptoSecureException error) {
+                Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
        scripto.onPrepared(new ScriptoPrepareListener() {
            @Override
            public void onScriptoPrepared() {
@@ -56,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .onError(new ScriptoErrorCallback() {
                     @Override
-                    public void onError(JavaScriptException error) {
+                    public void onError(ScriptoException error) {
                         Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 })

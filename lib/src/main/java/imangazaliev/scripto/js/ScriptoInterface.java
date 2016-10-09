@@ -1,6 +1,5 @@
 package imangazaliev.scripto.js;
 
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,17 +17,19 @@ import imangazaliev.scripto.utils.ScriptoUtils;
 public class ScriptoInterface {
 
     private Scripto scripto;
-    private Object javaScriptInterface;
+    private Object interfaceObject;
+    private String tag;
     private boolean annotationProtectionEnabled;
 
-    public ScriptoInterface(Scripto scripto, Object jsInterface) {
-        this(scripto, jsInterface, new ScriptoInterfaceConfig());
+    public ScriptoInterface(Scripto scripto, String tag, Object jsInterface) {
+        this(scripto, tag, jsInterface, new ScriptoInterfaceConfig());
     }
 
-    public ScriptoInterface(Scripto scripto, Object jsInterface, ScriptoInterfaceConfig config) {
+    public ScriptoInterface(Scripto scripto, String tag, Object jsInterface, ScriptoInterfaceConfig config) {
         this.scripto = scripto;
-        this.javaScriptInterface = jsInterface;
-        annotationProtectionEnabled = config.isAnnotationProtectionEnabled();
+        this.interfaceObject = jsInterface;
+        this.tag = tag;
+        this.annotationProtectionEnabled = config.isAnnotationProtectionEnabled();
     }
 
     @JavascriptInterface
@@ -36,7 +37,7 @@ public class ScriptoInterface {
         ScriptoUtils.runOnUi(new Runnable() {
             @Override
             public void run() {
-                callOnUi(methodName, jsonArgs);
+                callMethod(methodName, jsonArgs);
             }
         });
     }
@@ -46,43 +47,39 @@ public class ScriptoInterface {
         ScriptoUtils.runOnUi(new Runnable() {
             @Override
             public void run() {
-                Object response = callOnUi(methodName, jsonArgs);
-                String responseCall = String.format("Scripto.removeCallBack('%s', '%s')", callbackCode, scripto.getJavaScriptConverter().convertToString(response, response.getClass()));
+                Object response = callMethod(methodName, jsonArgs);
+                String responseJson = response == null ? "null" : scripto.getJavaScriptConverter().convertToString(response, response.getClass());
+                String responseCall = String.format("Scripto.removeCallBack('%s', '%s')", callbackCode, responseJson);
                 scripto.getWebView().loadUrl("javascript:" + responseCall);
             }
         });
     }
 
-    private Object callOnUi(String methodName, String jsonArgs) {
+    private Object callMethod(String methodName, String jsonArgs) {
         //получаем аргументы метода
         JavaArguments args = new JavaArguments(jsonArgs);
         //получаем метод по имени и типам аргументов
         Method method = searchMethodByName(methodName, args);
-        Object[] convertedArgs = convertArgs(args, method.getParameterTypes());
+
+        Object[] convertedArgs;
+        try {
+            convertedArgs = convertArgs(args.getArgs(), method.getParameterTypes());
+        } catch (RuntimeException e) {
+            return onJsinArgumentsConversionError(methodName, jsonArgs, e);
+        }
 
         //вызываем метод и передаем ему аргументы
         try {
-            //проверяем защиту аннотацией
-            if (annotationProtectionEnabled && hasSecureAnnotation(method)) {
-                //если защита аннотацией включена и аннотация присутствует, вызываем метод
-                return method.invoke(javaScriptInterface, convertedArgs);
-            } else if (!annotationProtectionEnabled) {
-                //если защита аннотацией отключена просто вызываем метод
-                return method.invoke(javaScriptInterface, convertedArgs);
-            } else {
-                Log.e("Scripto", "Method " + methodName + " not annotated with @ScriptoSecure annotation");
-            }
+            return getMethodCallResponse(methodName, method, convertedArgs);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new ScriptoException("Method call error", e);
+            throw new ScriptoException("Method " + methodName + " call error", e);
         }
-        return null;
     }
 
     /**
      * Конветирует из JSON в объекты
      */
-    private Object[] convertArgs(JavaArguments args, Class<?>[] parameterTypes) {
-        Object[] argsObjects = args.getArgs();
+    private Object[] convertArgs(Object[] argsObjects, Class<?>[] parameterTypes) {
         Object[] convertedArgs = new Object[argsObjects.length];
         for (int i = 0; i < argsObjects.length; i++) {
             convertedArgs[i] = scripto.getJavaConverter().toObject(String.valueOf(argsObjects[i]), parameterTypes[i]);
@@ -90,12 +87,23 @@ public class ScriptoInterface {
         return convertedArgs;
     }
 
+    private Object onJsinArgumentsConversionError(String methodName, String json, Exception e) {
+        String errorMessage = String.format("JSON conversion error. Interface: %s, method: %s, json: %s", tag, methodName, json);
+        ScriptoSecureException error = new ScriptoSecureException(errorMessage, e);
+        if (scripto.getErrorHandler() != null) {
+            scripto.getErrorHandler().onError(error);
+            return null;
+        } else {
+            throw error;
+        }
+    }
+
     /**
      * Пытается найти метод по имени. Если находятся два метода с одинаковыми именами и количеством параметров выбрасывает исключение
      */
     private Method searchMethodByName(String methodName, JavaArguments args) {
         ArrayList<Method> methodsForSearch = new ArrayList<>();
-        Method[] declaredMethods = javaScriptInterface.getClass().getDeclaredMethods();
+        Method[] declaredMethods = interfaceObject.getClass().getDeclaredMethods();
 
         for (Method declaredMethod : declaredMethods) {
             if (declaredMethod.getName().equals(methodName)) {
@@ -123,13 +131,27 @@ public class ScriptoInterface {
         }
     }
 
-    /**
-     * Проверяет наличие аннотации для защиты от несанкционированного вызова
-     */
-
-    private boolean hasSecureAnnotation(Method method) {
-        return method.isAnnotationPresent(ScriptoSecure.class);
+    private Object getMethodCallResponse(String methodName, Method method, Object[] convertedArgs) throws IllegalAccessException, InvocationTargetException {
+        //проверяем защиту аннотацией
+        if (!annotationProtectionEnabled) {
+            //если защита аннотацией отключена просто вызываем метод
+            return method.invoke(interfaceObject, convertedArgs);
+        } else if (annotationProtectionEnabled && ScriptoUtils.hasSecureAnnotation(method)) {
+            //если защита аннотацией включена и аннотация присутствует, вызываем метод
+            return method.invoke(interfaceObject, convertedArgs);
+        } else {
+            return onMethodProtectionError(methodName);
+        }
     }
 
+    private Object onMethodProtectionError(String methodName) {
+        ScriptoSecureException error = new ScriptoSecureException("Method " + methodName + " not annotated with @ScriptoSecure annotation");
+        if (scripto.getErrorHandler() != null) {
+            scripto.getErrorHandler().onError(error);
+            return null;
+        } else {
+            throw error;
+        }
+    }
 
 }

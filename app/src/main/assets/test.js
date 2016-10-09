@@ -17,16 +17,23 @@ function saveUserData() {
 
 function getUserData() {
     var user = {};
-    user['name'] = document.getElementById('name_field').value;
-    user['surname'] = document.getElementById('surname_field').value;
-    user['age'] = document.getElementById('age_field').value;
-    user['height'] = document.getElementById('height_field').value;
-    user['married'] = document.getElementById('married_checkbox').checked;
+
+    var nameField = document.getElementById('name_field');
+    var surnameField = document.getElementById('surname_field');
+    var ageField = document.getElementById('age_field');
+    var heightField = document.getElementById('height_field');
+    var marriedField = document.getElementById('married_checkbox');
+
+    user['name'] = nameField.value;
+    user['surname'] = surnameField.value;
+    user['age'] = ageField.value == "" ? 0 : ageField.value;
+    user['height'] = heightField.value == "" ? 0 : heightField.value;
+    user['married'] = marriedField.checked;
 
     return JSON.stringify(user);
 }
 
 //после окончания загрузки документа, грузим данные пользователя
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('ScriptoPrepared', function() {
     loadUserData();
 }, false);

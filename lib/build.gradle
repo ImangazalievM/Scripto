@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 1
-        versionName "0.5.2"
+        versionCode 2
+        versionName "1.0.0"
     }
 
     buildTypes {
@@ -46,13 +46,17 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 
+    testCompile "org.powermock:powermock-module-junit4:1.6.4"
+    testCompile "org.powermock:powermock-module-junit4-rule:1.6.4"
+    testCompile "org.powermock:powermock-api-mockito:1.6.4"
+    testCompile "org.powermock:powermock-classloading-xstream:1.6.4"
 }
 
 // это блок будет обработан плагином bintray-release
 publish {
     groupId = 'com.github.imangazalievm'
     artifactId = 'scripto'
-    publishVersion = '0.5.2'
+    publishVersion = '1.0.0'
     desc = 'Библиотека для удобного вызова JS функций из Java и наоборот'
     licences = ['MIT']
     website = 'https://github.com/ImangazalievM/Scripto'

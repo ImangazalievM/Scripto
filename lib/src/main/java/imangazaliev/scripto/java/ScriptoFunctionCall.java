@@ -2,21 +2,21 @@ package imangazaliev.scripto.java;
 
 public class ScriptoFunctionCall<T> {
 
-    private ScriptoFunction scriptoFunction;
-    private String callCode;
+    ScriptoFunction scriptoFunction;
+    String callCode;
 
     private ScriptoResponseCallback<T> responseCallback;
     private ScriptoErrorCallback errorCallback;
-    private Class<?> responseType;
+    private Class<T> responseType;
 
-    private boolean throwOnEror;
+    private boolean throwOnError;
 
-    public ScriptoFunctionCall(ScriptoFunction scriptoFunction, Class<?> responseType, String callCode) {
+    public ScriptoFunctionCall(ScriptoFunction scriptoFunction, Class<T> responseType, String callCode) {
         this.scriptoFunction = scriptoFunction;
         this.responseType = responseType;
         this.callCode = callCode;
 
-        throwOnEror = false;
+        throwOnError = false;
     }
 
     public ScriptoFunctionCall<T> onResponse(ScriptoResponseCallback<T> responseCallback) {
@@ -41,12 +41,12 @@ public class ScriptoFunctionCall<T> {
      * Выбрасывать исключение при ошибке в JS или нет, если нет callback'а для ошибкм
      */
     public ScriptoFunctionCall<T> throwOnError(boolean throwOnEror) {
-        this.throwOnEror = throwOnEror;
+        this.throwOnError = throwOnEror;
         return this;
     }
 
     public boolean isThrowOnError() {
-        return throwOnEror;
+        return throwOnError;
     }
 
 

@@ -14,7 +14,7 @@ public class JavaScriptArguments {
         this.stringArgs = initArgs(argsObjects);
     }
 
-    public String[] initArgs(Object[] argsObjects) {
+    private String[] initArgs(Object[] argsObjects) {
         //функция была вызвана без аргументов
         if (argsObjects == null) {
             return new String[0];
@@ -43,17 +43,17 @@ public class JavaScriptArguments {
         return resultArgs;
     }
 
-    public String getArguments() {
+    public String[] getArguments() {
+        return stringArgs;
+    }
+
+    public String getFormattedArguments() {
         String resultArgsString = "";
         for (int i = 0; i < stringArgs.length; i++) {
             //если аргумент не первый, добавляем запятую
             resultArgsString += (i == 0) ? stringArgs[i] : "," + stringArgs[i];
         }
         return resultArgsString;
-    }
-
-    public int getArgumentsCount() {
-        return stringArgs.length;
     }
 
 }

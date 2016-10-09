@@ -8,7 +8,7 @@ Library for easy call JS-functions from Java.
 # Setup
 
 ```gradle
-compile 'com.github.imangazalievm:scripto:0.5.1'
+compile 'com.github.imangazalievm:scripto:1.0.0'
 ```
 
 # Using the library
@@ -27,12 +27,7 @@ function getLogin() {
 }
 ```
 
-Copy the file ```scripto.js``` from example project into assets folder and add in html:
-
-```java
-<script src="scripto.js"></script>
-```
-The script should be loaded before other scripts.
+Copy the file ```scripto.js``` from example project into assets/scripto/scripto.js.
 
 To call a function we should create Java-interface with JS-functions description:
 

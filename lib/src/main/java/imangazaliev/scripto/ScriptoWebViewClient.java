@@ -5,7 +5,7 @@ import android.webkit.WebViewClient;
 
 public class ScriptoWebViewClient extends WebViewClient{
 
-    protected interface OnPageLoadedListener {
+    interface OnPageLoadedListener {
         void onPageLoaded();
     }
 

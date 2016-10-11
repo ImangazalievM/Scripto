@@ -7,7 +7,7 @@
 # Подключение библиотеки
 
 ```gradle
-compile 'com.github.imangazalievm:scripto:1.0.1'
+compile 'com.github.imangazalievm:scripto:1.0.2'
 ```
 
 # Использование библиотеки
@@ -26,7 +26,11 @@ function getLogin() {
 }
 ```
 
-Скопируйте файл ```scripto.js``` из примера в папку assets/scripto/scripto.js.
+Скопируйте файл ```scripto.js``` из примера в папку assets подключите его через Scripto:
+
+```java
+scripto.addJsScriptFromAssets("scripto.js");
+```
 
 Для вызова функций нам нужно создать Java-интерфейс с описанием JS-функций:
 

@@ -6,6 +6,7 @@ import android.webkit.WebView;
 
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import imangazaliev.scripto.converter.JavaConverter;
 import imangazaliev.scripto.converter.JavaScriptConverter;
@@ -52,7 +53,6 @@ public class Scripto {
         scriptoWebViewClient.setOnPageLoadedListener(new ScriptoWebViewClient.OnPageLoadedListener() {
             @Override
             public void onPageLoaded() {
-                addJsScriptFromAssets("scripto/scripto.js");
                 addJsScripts();
             }
         });
@@ -75,17 +75,20 @@ public class Scripto {
     }
 
     private void addJsScripts() {
+        StringBuilder fullJsCodeBuilder = new StringBuilder();
         for (int i = 0; i < jsScripts.size(); i++) {
-            String encodedJsCode = Base64.encodeToString(jsScripts.remove(i).getBytes(), Base64.NO_WRAP);
-            webView.loadUrl("javascript:(function() {" +
-                    "   var head = document.getElementsByTagName('head').item(0);" +
-                    "   var script = document.createElement('script');" +
-                    "   script.type = 'text/javascript';" +
-                    // Tell the browser to BASE64-decode the string into your script !!!
-                    "   script.innerHTML = window.atob('" + encodedJsCode + "');" +
-                    "   head.insertBefore(script, head.firstChild);" +
-                    "})()");
+            fullJsCodeBuilder.append(jsScripts.remove(i));
         }
+
+        String encodedJsCode = Base64.encodeToString(fullJsCodeBuilder.toString().getBytes(), Base64.NO_WRAP);
+        webView.loadUrl("javascript:(function() {" +
+                "   var head = document.getElementsByTagName('head').item(0);" +
+                "   var script = document.createElement('script');" +
+                "   script.type = 'text/javascript';" +
+                // Tell the browser to BASE64-decode the string into your script !!!
+                "   script.innerHTML = window.atob('" + encodedJsCode + "');" +
+                "   head.insertBefore(script, head.firstChild);" +
+                "})()");
     }
 
     public void addJsScriptFromAssets(String fileName) {

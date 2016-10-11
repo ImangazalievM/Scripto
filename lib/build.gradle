@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.0.1"
+        versionCode 4
+        versionName "1.0.2"
     }
 
     buildTypes {
@@ -56,7 +56,7 @@ dependencies {
 publish {
     groupId = 'com.github.imangazalievm'
     artifactId = 'scripto'
-    publishVersion = '1.0.1'
+    publishVersion = '1.0.2'
     desc = 'Библиотека для удобного вызова JS функций из Java и наоборот'
     licences = ['MIT']
     website = 'https://github.com/ImangazalievM/Scripto'

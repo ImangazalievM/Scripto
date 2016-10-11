@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         scripto = new Scripto.Builder(webView).build();
         scripto.addInterface("Android", new AndroidInterface(this), new ScriptoInterfaceConfig().enableAnnotationProtection(true));
         scripto.addInterface("Preferences", new PreferencesInterface(this), new ScriptoInterfaceConfig());
+        scripto.addJsScriptFromAssets("scripto/scripto.js");
         userInfoScript = scripto.create(UserInfoScript.class);
 
         scripto.onError(new Scripto.ErrorHandler() {

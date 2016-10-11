@@ -33,7 +33,7 @@ function getUserData() {
     return JSON.stringify(user);
 }
 
-//после окончания загрузки документа, грузим данные пользователя
+//после того, как Scripto готово
 document.addEventListener('ScriptoPrepared', function() {
     loadUserData();
 }, false);

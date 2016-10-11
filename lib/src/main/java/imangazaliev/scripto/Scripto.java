@@ -3,6 +3,7 @@ package imangazaliev.scripto;
 import android.util.Base64;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
@@ -76,8 +77,9 @@ public class Scripto {
 
     private void addJsScripts() {
         StringBuilder fullJsCodeBuilder = new StringBuilder();
-        for (int i = 0; i < jsScripts.size(); i++) {
-            fullJsCodeBuilder.append(jsScripts.remove(i));
+
+        for (int i = jsScripts.size() - 1; i >= 0; i--) {
+            fullJsCodeBuilder.append(jsScripts.get(i));
         }
 
         //оповещаем java-библиотеку, о готовности к работе

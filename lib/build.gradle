@@ -1,6 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
+final LIBRARY_VERSION_NAME = '1.0.3'
+final LIBRARY_VERSION_CODE = 5
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -8,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.0.2"
+        versionCode LIBRARY_VERSION_CODE
+        versionName "$LIBRARY_VERSION_NAME"
     }
 
     buildTypes {
@@ -56,7 +59,7 @@ dependencies {
 publish {
     groupId = 'com.github.imangazalievm'
     artifactId = 'scripto'
-    publishVersion = '1.0.2'
+    publishVersion = "$LIBRARY_VERSION_NAME"
     desc = 'Библиотека для удобного вызова JS функций из Java и наоборот'
     licences = ['MIT']
     website = 'https://github.com/ImangazalievM/Scripto'

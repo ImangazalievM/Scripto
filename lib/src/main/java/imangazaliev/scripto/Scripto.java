@@ -80,6 +80,9 @@ public class Scripto {
             fullJsCodeBuilder.append(jsScripts.remove(i));
         }
 
+        //оповещаем java-библиотеку, о готовности к работе
+        fullJsCodeBuilder.append("ScriptoInterface.onScriptoPrepared();");
+
         String encodedJsCode = Base64.encodeToString(fullJsCodeBuilder.toString().getBytes(), Base64.NO_WRAP);
         webView.loadUrl("javascript:(function() {" +
                 "   var head = document.getElementsByTagName('head').item(0);" +

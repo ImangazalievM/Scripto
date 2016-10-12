@@ -127,12 +127,24 @@ public class Scripto {
         return javaConverter;
     }
 
-    public void addInterface(String tag, Object obj) {
-        webView.addJavascriptInterface(new ScriptoInterface(this, tag, obj), tag);
+    public void addInterface(String tag, Object jsInterface) {
+        addInterface(tag, jsInterface, new ScriptoInterfaceConfig());
     }
 
-    public void addInterface(String tag, Object obj, ScriptoInterfaceConfig config) {
-        webView.addJavascriptInterface(new ScriptoInterface(this, tag,  obj, config), tag);
+    public void addInterface(String tag, Object jsInterface, ScriptoInterfaceConfig config) {
+        if (tag == null) {
+            throw new NullPointerException("Tag object can't be null");
+        }
+
+        if (jsInterface == null) {
+            throw new NullPointerException("Tag can't be null");
+        }
+
+        if (config == null) {
+            throw new NullPointerException("Config object can't be null");
+        }
+
+        webView.addJavascriptInterface(new ScriptoInterface(this, tag,  jsInterface, config), tag);
     }
 
     public void removeInterface(String tag) {

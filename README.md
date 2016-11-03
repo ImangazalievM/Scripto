@@ -9,7 +9,7 @@ Library for easy call JS-functions from Java.
 # Setup
 
 ```gradle
-compile 'com.github.imangazalievm:scripto:1.0.4'
+compile 'com.github.imangazalievm:scripto:1.1.0'
 ```
 
 # Using the library

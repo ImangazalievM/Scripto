@@ -16,17 +16,23 @@ import imangazaliev.scripto.utils.StringUtils;
 public class ScriptoProxy implements InvocationHandler {
 
     private Scripto scripto;
+    private String jsVariableName;
     private String proxyId;
     private HashMap<String, ScriptoFunctionCall> functionCalls;
 
-    public ScriptoProxy(Scripto scripto) {
+    public ScriptoProxy(Scripto scripto, Class<?> scriptClass) {
         this.scripto = scripto;
+        this.jsVariableName = getJsVariableName(scriptClass);
 
         functionCalls = new HashMap();
         proxyId = StringUtils.randomString(5);
 
         //добавляем себя как интерфейс для приема коллбеков от JS
         scripto.getWebView().addJavascriptInterface(this, proxyId);
+    }
+
+    private String getJsVariableName(Class<?> scriptClass) {
+        return scriptClass.isAnnotationPresent(JsVariableName.class) ? scriptClass.getAnnotation(JsVariableName.class).value() : null;
     }
 
     @Override
@@ -36,7 +42,7 @@ public class ScriptoProxy implements InvocationHandler {
             return method.invoke(this, args);
         }
 
-        ScriptoFunction scriptoFunction = new ScriptoFunction(scripto, method, args, proxyId);
+        ScriptoFunction scriptoFunction = new ScriptoFunction(scripto, jsVariableName, method, args, proxyId);
         Class<?> returnType = ScriptoUtils.getCallResponseType(method);
         String callCode = StringUtils.randomNumericString(5);
 

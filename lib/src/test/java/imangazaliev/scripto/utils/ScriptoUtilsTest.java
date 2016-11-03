@@ -1,18 +1,9 @@
 package imangazaliev.scripto.utils;
 
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.robolectric.Robolectric;
-import org.robolectric.shadows.ShadowLooper;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-
-import imangazaliev.scripto.java.ScriptoFunctionCall;
 import imangazaliev.scripto.test.BaseTestPowerMock;
-import imangazaliev.scripto.test.JsScript;
+import imangazaliev.scripto.test.JsTestScript;
 import imangazaliev.scripto.test.TestJsInterface;
 
 import static junit.framework.Assert.assertEquals;
@@ -27,7 +18,7 @@ public class ScriptoUtilsTest extends BaseTestPowerMock {
     @Test
     public void testValidateScriptInterface() {
         //если не выдало ошибку, то все нормально
-        ScriptoUtils.validateScriptInterface(JsScript.class);
+        ScriptoUtils.validateScriptInterface(JsTestScript.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -63,7 +54,7 @@ public class ScriptoUtilsTest extends BaseTestPowerMock {
 
     @Test
     public void testGetCallResponseType() throws NoSuchMethodException {
-        assertEquals(String.class, ScriptoUtils.getCallResponseType(JsScript.class.getMethod("getName")));
+        assertEquals(String.class, ScriptoUtils.getCallResponseType(JsTestScript.class.getMethod("getName")));
     }
 
     @Test

@@ -85,7 +85,7 @@ loginScript.getLogin()
 Если вы хотите получить "голый" JSON, то обязательно используйте класс RawReponse:
 
 ```java
- ScriptoFunctionCall<RawResponse> getJson();
+ScriptoFunctionCall<RawResponse> getJson();
 ```
 
 Получаем JSON:
@@ -94,6 +94,35 @@ loginScript.getLogin()
 loginScript.getJson()
     .onResponse(response -> Toast.makeText(MainActivity.this, response.getResponse(), Toast.LENGTH_LONG).show())
     .call();
+```
+
+Также мы можем вызывать у функции у объектов, добавив над интерфейсом, описывающем JS-функцию аннотацию JsVariableName:
+
+```
+public interface LoginScript {
+
+@JsVariableName("myVar")
+public interface LoginScript {
+
+    ScriptoFunctionCall<Void> setLogin(String login);
+
+    ScriptoFunctionCall<String> getLogin();
+
+}
+```
+
+Аннотацию JsVariableName можно применять к отдельному методу:
+
+```
+@JsVariableName("myVar")
+ScriptoFunctionCall<String> getLogin();
+```
+
+Если названия метода и вызываемой функции должны быть разными, воспользуйтесь аннотацией @FunctionName:
+
+```
+@FunctionName("myFuncName")
+ScriptoFunctionCall<String> getLogin();
 ```
 
 ### Вызов Java-методов из JavaScript

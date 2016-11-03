@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import imangazaliev.scripto.java.JsVariableName;
 import imangazaliev.scripto.java.ScriptoFunctionCall;
 import imangazaliev.scripto.js.ScriptoSecure;
 

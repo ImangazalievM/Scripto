@@ -112,7 +112,7 @@ public class Scripto {
 
         //если объект не является интерфейсом, выбрасываем исключение
         ScriptoUtils.validateScriptInterface(script);
-        return (T) Proxy.newProxyInstance(script.getClassLoader(), new Class<?>[]{script}, new ScriptoProxy(this));
+        return (T) Proxy.newProxyInstance(script.getClassLoader(), new Class<?>[]{script}, new ScriptoProxy(this, script));
     }
 
     public WebView getWebView() {

@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getUserData(View view) {
-        userInfoScript.getUserData()
+        userInfoScript.getUser()
                 .onResponse(new ScriptoResponseCallback<User>() {
                     @Override
                     public void onResponse(User user) {

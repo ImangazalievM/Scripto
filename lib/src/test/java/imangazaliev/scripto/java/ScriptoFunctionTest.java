@@ -21,7 +21,6 @@ public class ScriptoFunctionTest extends BaseTest {
     @Mock
     Scripto scripto;
     Method methodInitProfile;
-    Method methodSetFontSize;
 
 
     @Before
@@ -29,7 +28,6 @@ public class ScriptoFunctionTest extends BaseTest {
         MockitoAnnotations.initMocks(this);
 
         methodInitProfile = JsTestScript.class.getMethod("initProfile");
-        methodSetFontSize = JsTestScript.class.getMethod("setFontSize");
     }
 
     @Test
@@ -40,17 +38,24 @@ public class ScriptoFunctionTest extends BaseTest {
     }
 
     @Test
-    public void testScriptoWithVariable() {
+    public void testScriptoFunctionWithVariableName() {
         ScriptoFunction function = new ScriptoFunction(scripto, "myVar", methodInitProfile, args, "");
 
         assertEquals("myVar.initProfile('My text',55,true,null);", function.jsFunction);
     }
 
     @Test
-    public void testScriptoWithVariableFromAnnotation() {
-        ScriptoFunction function = new ScriptoFunction(scripto, null, methodSetFontSize, new Object[] {14}, "");
+    public void testScriptoFunctionWithJsVariableNameAnnotation() throws NoSuchMethodException {
+        ScriptoFunction function = new ScriptoFunction(scripto, null, JsTestScript.class.getMethod("setFontSize"), new Object[] {14}, "");
 
         assertEquals("settings.setFontSize(14);", function.jsFunction);
+    }
+
+    @Test
+    public void testScriptoFunctionWithDifferentNames() throws NoSuchMethodException {
+        ScriptoFunction function = new ScriptoFunction(scripto, null, JsTestScript.class.getMethod("getLogin"), new Object[] {}, "");
+
+        assertEquals("getUserLogin();", function.jsFunction);
     }
 
 

@@ -10,6 +10,7 @@ import android.widget.Toast;
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.ScriptoException;
 import imangazaliev.scripto.ScriptoPrepareListener;
+import imangazaliev.scripto.ScriptoSettings;
 import imangazaliev.scripto.java.JavaScriptException;
 import imangazaliev.scripto.java.ScriptoErrorCallback;
 import imangazaliev.scripto.java.ScriptoResponseCallback;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ScriptoSettings.setLogLevel(ScriptoSettings.LogLevel.FULL);
         WebView webView = (WebView) findViewById(R.id.web_view);
 
         scripto = new Scripto.Builder(webView).build();

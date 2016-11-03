@@ -3,7 +3,7 @@ package imangazaliev.scripto;
 public class ScriptoSettings {
 
     public enum LogLevel {
-        NONE, INFO, ERROR, FULL;
+        NONE, INFO, ERROR, FULL
     }
 
     private static LogLevel sLogLevel = LogLevel.NONE;

@@ -10,7 +10,7 @@ import static imangazaliev.scripto.ScriptoSettings.LogLevel.INFO;
 
 public class ScriptoLogUtils {
 
-    private static final String LOG_TAG = "Scripto Log";
+    private static final String LOG_TAG = "ScriptoLog";
 
     public static void logMessage(String message) {
         ScriptoSettings.LogLevel level  = ScriptoSettings.getLogLevel();

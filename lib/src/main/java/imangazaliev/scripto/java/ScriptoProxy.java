@@ -87,13 +87,13 @@ public class ScriptoProxy implements InvocationHandler {
             try {
                 Object response = scripto.getJavaConverter().toObject(responseString, responseType);
                 callback.onResponse(response);
-                ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
             } catch (JsonSyntaxException e) {
                 ScriptoException error =  new ScriptoException("Ошибка при конвертации JSON из JS", e);
                 ScriptoLogUtils.logError(error);
                 onError(functionCall, error);
             }
         }
+        ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
     }
 
     @JavascriptInterface

@@ -2,8 +2,8 @@ package imangazaliev.scripto.java;
 
 public class ScriptoFunctionCall<T> {
 
-    ScriptoFunction scriptoFunction;
-    String callCode;
+    private ScriptoFunction scriptoFunction;
+    private String callCode;
 
     private ScriptoResponseCallback<T> responseCallback;
     private ScriptoErrorCallback errorCallback;
@@ -19,12 +19,16 @@ public class ScriptoFunctionCall<T> {
         throwOnError = false;
     }
 
+    ScriptoFunction getScriptoFunction() {
+        return scriptoFunction;
+    }
+
     public ScriptoFunctionCall<T> onResponse(ScriptoResponseCallback<T> responseCallback) {
         this.responseCallback = responseCallback;
         return this;
     }
 
-    public ScriptoResponseCallback<T> getResponseCallback() {
+    ScriptoResponseCallback<T> getResponseCallback() {
         return responseCallback;
     }
 
@@ -45,12 +49,12 @@ public class ScriptoFunctionCall<T> {
         return this;
     }
 
-    public boolean isThrowOnError() {
+    boolean isThrowOnError() {
         return throwOnError;
     }
 
 
-    protected Class<?> getResponseType() {
+    Class<?> getResponseType() {
         return responseType;
     }
 

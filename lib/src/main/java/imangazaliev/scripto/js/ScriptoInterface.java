@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.ScriptoException;
+import imangazaliev.scripto.utils.ScriptoLogUtils;
 import imangazaliev.scripto.utils.ScriptoUtils;
 
 /**
@@ -65,11 +66,13 @@ public class ScriptoInterface {
         try {
             convertedArgs = convertArgs(args.getArgs(), method.getParameterTypes());
         } catch (RuntimeException e) {
-            return onJsinArgumentsConversionError(methodName, jsonArgs, e);
+            ScriptoLogUtils.logError(e, String.format("Method '%s' call error", methodName));
+            return onJsonArgumentsConversionError(methodName, jsonArgs, e);
         }
 
         //вызываем метод и передаем ему аргументы
         try {
+            ScriptoLogUtils.logMessage(String.format("Method '%s' call success", methodName));
             return getMethodCallResponse(methodName, method, convertedArgs);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new ScriptoException("Method " + methodName + " call error", e);
@@ -87,7 +90,7 @@ public class ScriptoInterface {
         return convertedArgs;
     }
 
-    private Object onJsinArgumentsConversionError(String methodName, String json, Exception e) {
+    private Object onJsonArgumentsConversionError(String methodName, String json, Exception e) {
         String errorMessage = String.format("JSON conversion error. Interface: %s, method: %s, json: %s", tag, methodName, json);
         ScriptoSecureException error = new ScriptoSecureException(errorMessage, e);
         if (scripto.getErrorHandler() != null) {

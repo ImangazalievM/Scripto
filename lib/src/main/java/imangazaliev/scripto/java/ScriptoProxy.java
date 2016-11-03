@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.ScriptoException;
+import imangazaliev.scripto.utils.ScriptoAssetsJavaScriptReader;
+import imangazaliev.scripto.utils.ScriptoLogUtils;
 import imangazaliev.scripto.utils.ScriptoUtils;
 import imangazaliev.scripto.utils.StringUtils;
 
@@ -85,8 +87,11 @@ public class ScriptoProxy implements InvocationHandler {
             try {
                 Object response = scripto.getJavaConverter().toObject(responseString, responseType);
                 callback.onResponse(response);
+                ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
             } catch (JsonSyntaxException e) {
-                onError(functionCall, new ScriptoException("Ошибка при конвертации JSON из JS", e));
+                ScriptoException error =  new ScriptoException("Ошибка при конвертации JSON из JS", e);
+                ScriptoLogUtils.logError(error);
+                onError(functionCall, error);
             }
         }
     }
@@ -107,6 +112,7 @@ public class ScriptoProxy implements InvocationHandler {
         }
 
         ScriptoFunctionCall functionCall = functionCalls.remove(callbackCode);
+        ScriptoLogUtils.logError(String.format("Function '%s' call error. Message: %s", functionCall.getScriptoFunction().getJsFunction(), message));
         onError(functionCall, new JavaScriptException(message));
     }
 

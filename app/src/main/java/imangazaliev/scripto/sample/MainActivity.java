@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-       scripto.onPrepared(new ScriptoPrepareListener() {
-           @Override
-           public void onScriptoPrepared() {
-               userInfoScript.loadUserData();
-           }
-       });
+        scripto.onPrepared(new ScriptoPrepareListener() {
+            @Override
+            public void onScriptoPrepared() {
+                userInfoScript.loadUserData();
+            }
+        });
 
 
         String html = AssetsReader.readFileAsText(this, "test.html");

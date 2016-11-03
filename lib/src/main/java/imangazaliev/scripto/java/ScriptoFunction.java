@@ -20,6 +20,10 @@ public class ScriptoFunction {
         this.jsFunction = buildJavaScriptFunctionCall(jsVariableName, method, args);
     }
 
+    String getJsFunction() {
+        return jsFunction;
+    }
+
     /**
      * Строит строку вызова JS-функции
      *

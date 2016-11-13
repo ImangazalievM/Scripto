@@ -63,9 +63,9 @@ public class ScriptoFunction {
                 + "(function(){"
                 + "	 try {"
                 + "		var response = " + jsFunction
-                + proxyId + ".onCallbackResponse('" + callCode + "', response);"
+                +       proxyId + ".onCallbackResponse('" + callCode + "', response);"
                 + "	 } catch (err) {"
-                + proxyId + ".onCallbackError('" + callCode + "', err.message);"
+                +       proxyId + ".onCallbackError('" + callCode + "', err.message);"
                 + "	 }"
                 + "})();";
         scripto.getWebView().loadUrl(jsCall);

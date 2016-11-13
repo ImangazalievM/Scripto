@@ -80,20 +80,22 @@ public class ScriptoProxy implements InvocationHandler {
         if (responseString == null || responseType.isAssignableFrom(Void.class)) {
             //если ответ не получен (null) или функция ничего не должна возвращать(Void), передаем null
             callback.onResponse(null);
+            ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
         } else if (responseType.isAssignableFrom(RawResponse.class)) {
             //возвращаем ответ без конвертации
             callback.onResponse(new RawResponse(responseString));
+            ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
         } else {
             try {
                 Object response = scripto.getJavaConverter().toObject(responseString, responseType);
                 callback.onResponse(response);
+                ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
             } catch (JsonSyntaxException e) {
                 ScriptoException error =  new ScriptoException("Ошибка при конвертации JSON из JS", e);
-                ScriptoLogUtils.logError(error);
+                ScriptoLogUtils.logError(error, String.format("Function '%s' call error", functionCall.getScriptoFunction().getJsFunction()));
                 onError(functionCall, error);
             }
         }
-        ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
     }
 
     @JavascriptInterface

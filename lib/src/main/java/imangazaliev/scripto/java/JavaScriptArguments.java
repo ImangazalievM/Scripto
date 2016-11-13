@@ -37,7 +37,7 @@ public class JavaScriptArguments {
             } else {
                 //если аргумент является объектом, конвертируем в json
                 Object arg = argsObjects[i];
-                resultArgs[i] = javaScriptConverter.convertToString(arg, arg.getClass());
+                resultArgs[i] =  resultArgs[i] = String.format("'%s'", javaScriptConverter.convertToString(arg, arg.getClass()));
             }
         }
         return resultArgs;

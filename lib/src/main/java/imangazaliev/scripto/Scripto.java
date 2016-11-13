@@ -78,6 +78,7 @@ public class Scripto {
     private void addJsScripts() {
         StringBuilder fullJsCodeBuilder = new StringBuilder();
 
+        //собираем весь код в одну строку
         for (int i = jsScripts.size() - 1; i >= 0; i--) {
             fullJsCodeBuilder.append(jsScripts.get(i));
         }
@@ -85,6 +86,7 @@ public class Scripto {
         //оповещаем java-библиотеку, о готовности к работе
         fullJsCodeBuilder.append("ScriptoInterface.onScriptoPrepared();");
 
+        //вставляем весь код в блок head
         String encodedJsCode = Base64.encodeToString(fullJsCodeBuilder.toString().getBytes(), Base64.NO_WRAP);
         webView.loadUrl("javascript:(function() {" +
                 "   var head = document.getElementsByTagName('head').item(0);" +

@@ -15,8 +15,7 @@ public class ScriptoFunctionCall<T> {
         this.scriptoFunction = scriptoFunction;
         this.responseType = responseType;
         this.callCode = callCode;
-
-        throwOnError = false;
+        this.throwOnError = false;
     }
 
     ScriptoFunction getScriptoFunction() {
@@ -37,7 +36,7 @@ public class ScriptoFunctionCall<T> {
         return this;
     }
 
-    public ScriptoErrorCallback getErrorCallback() {
+    ScriptoErrorCallback getErrorCallback() {
         return errorCallback;
     }
 
@@ -53,11 +52,9 @@ public class ScriptoFunctionCall<T> {
         return throwOnError;
     }
 
-
     Class<?> getResponseType() {
         return responseType;
     }
-
 
     public void call() {
         scriptoFunction.callJavaScriptFunction(callCode);

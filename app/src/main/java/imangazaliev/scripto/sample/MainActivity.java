@@ -2,7 +2,6 @@ package imangazaliev.scripto.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -10,8 +9,6 @@ import android.widget.Toast;
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.ScriptoException;
 import imangazaliev.scripto.ScriptoPrepareListener;
-import imangazaliev.scripto.ScriptoSettings;
-import imangazaliev.scripto.java.JavaScriptException;
 import imangazaliev.scripto.java.ScriptoErrorCallback;
 import imangazaliev.scripto.java.ScriptoResponseCallback;
 import imangazaliev.scripto.js.ScriptoInterfaceConfig;
@@ -26,11 +23,12 @@ public class MainActivity extends AppCompatActivity {
     private Scripto scripto;
     private UserInfoScript userInfoScript;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ScriptoSettings.setLogLevel(ScriptoSettings.LogLevel.FULL);
+
         WebView webView = (WebView) findViewById(R.id.web_view);
 
         scripto = new Scripto.Builder(webView).build();
@@ -66,16 +64,14 @@ public class MainActivity extends AppCompatActivity {
                 .onResponse(new ScriptoResponseCallback<User>() {
                     @Override
                     public void onResponse(User user) {
-                        Toast.makeText(MainActivity.this, user.getUserInfo(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, user.getUserInfo(), Toast.LENGTH_SHORT).show();
                     }
-                })
-                .onError(new ScriptoErrorCallback() {
+                }).onError(new ScriptoErrorCallback() {
                     @Override
                     public void onError(ScriptoException error) {
                         Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                })
-                .call();
+                }).call();
     }
 
 }

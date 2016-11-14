@@ -50,13 +50,13 @@ public class Scripto {
 
     private void initWebView(Builder builder) {
         ScriptoWebViewClient scriptoWebViewClient = builder.scriptoWebViewClient;
-        webView.setWebViewClient(builder.scriptoWebViewClient);
         scriptoWebViewClient.setOnPageLoadedListener(new ScriptoWebViewClient.OnPageLoadedListener() {
             @Override
             public void onPageLoaded() {
                 addJsScripts();
             }
         });
+        webView.setWebViewClient(scriptoWebViewClient);
 
         webView.getSettings().setJavaScriptEnabled(true);
         //ждем команду от JS о готовности к работе
@@ -72,7 +72,7 @@ public class Scripto {
                     }
                 });
             }
-        }, "ScriptoInterface");
+        }, "ScriptoPreparedListener");
     }
 
     private void addJsScripts() {
@@ -82,9 +82,9 @@ public class Scripto {
         for (int i = jsScripts.size() - 1; i >= 0; i--) {
             fullJsCodeBuilder.append(jsScripts.get(i));
         }
-
+        
         //оповещаем java-библиотеку, о готовности к работе
-        fullJsCodeBuilder.append("ScriptoInterface.onScriptoPrepared();");
+        fullJsCodeBuilder.append("ScriptoPreparedListener.onScriptoPrepared();");
 
         //вставляем весь код в блок head
         String encodedJsCode = Base64.encodeToString(fullJsCodeBuilder.toString().getBytes(), Base64.NO_WRAP);
@@ -95,7 +95,7 @@ public class Scripto {
                 // Tell the browser to BASE64-decode the string into your script !!!
                 "   script.innerHTML = window.atob('" + encodedJsCode + "');" +
                 "   head.insertBefore(script, head.firstChild);" +
-                "})()");
+                "})();");
     }
 
     public void addJsScriptFromAssets(String fileName) {

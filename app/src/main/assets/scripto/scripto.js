@@ -71,6 +71,15 @@ Scripto.generateCallbackId = function() {
 
 /*--------------------------------------------------*/
 
+//Поддержка Custom Event на старых устройствах
+if (!window.CustomEvent) {
+  window.CustomEvent = function (type) {
+    var e = document.createEvent('CustomEvent');
+    e.initCustomEvent(type);
+    return e;
+  };
+}
+
 //если до этого были подключены скрипты работающие со Scripto,
 //они оповещаются о готовности
 var event = new CustomEvent("ScriptoPrepared");

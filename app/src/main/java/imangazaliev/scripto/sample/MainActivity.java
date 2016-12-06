@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         scripto.onError(new Scripto.ErrorHandler() {
             @Override
-            public void onError(ScriptoSecureException error) {
+            public void onError(ScriptoException error) {
                 Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

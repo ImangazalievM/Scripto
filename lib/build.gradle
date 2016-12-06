@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
-final LIBRARY_VERSION_NAME = '1.1.4'
-final LIBRARY_VERSION_CODE = 11
+final LIBRARY_VERSION_NAME = '1.1.5'
+final LIBRARY_VERSION_CODE = 12
 
 android {
     compileSdkVersion 23

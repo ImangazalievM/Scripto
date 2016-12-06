@@ -24,7 +24,7 @@ import imangazaliev.scripto.utils.ScriptoUtils;
 public class Scripto {
 
     public interface ErrorHandler {
-        void onError(ScriptoSecureException error);
+        void onError(ScriptoException error);
     }
 
     private WebView webView;
@@ -82,7 +82,7 @@ public class Scripto {
         for (int i = jsScripts.size() - 1; i >= 0; i--) {
             fullJsCodeBuilder.append(jsScripts.get(i));
         }
-        
+
         //оповещаем java-библиотеку, о готовности к работе
         fullJsCodeBuilder.append("ScriptoPreparedListener.onScriptoPrepared();");
 
@@ -98,8 +98,18 @@ public class Scripto {
                 "})();");
     }
 
-    public void addJsScriptFromAssets(String fileName) {
-        addJsScript(scriptoAssetsJavaScriptReader.read(fileName));
+    public void addJsScriptFromAssets(String filePath) {
+        String jsCode = scriptoAssetsJavaScriptReader.read(filePath);
+        if (jsCode == null) {
+            ScriptoException jsFileReadError = new ScriptoException(String.format("File %s in assets folder not found", filePath));
+            if (errorHandler != null) {
+                errorHandler.onError(jsFileReadError);
+            } else {
+                throw jsFileReadError;
+            }
+        } else {
+            addJsScript(jsCode);
+        }
     }
 
     public void addJsScript(String jsCode) {
@@ -146,7 +156,7 @@ public class Scripto {
             throw new NullPointerException("Config object can't be null");
         }
 
-        webView.addJavascriptInterface(new ScriptoInterface(this, tag,  jsInterface, config), tag);
+        webView.addJavascriptInterface(new ScriptoInterface(this, tag, jsInterface, config), tag);
     }
 
     public void removeInterface(String tag) {

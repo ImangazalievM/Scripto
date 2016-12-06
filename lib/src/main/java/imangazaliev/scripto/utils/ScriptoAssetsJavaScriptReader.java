@@ -28,24 +28,20 @@ public class ScriptoAssetsJavaScriptReader {
      *
      * @return Содержимое текстового файла
      */
-    public String read(String filePath) throws RuntimeException {
+    public String read(String filePath) throws IllegalArgumentException {
         if (filePath == null) {
             throw new IllegalArgumentException("Имя файла не может быть null");
         }
 
         InputStream textFileStream = getTextFileInputStream(filePath);
-        if (textFileStream == null) {
-            return null;
-        } else {
-            return readTextFromInputStream(textFileStream);
-        }
+        return textFileStream == null ? null : readTextFromInputStream(textFileStream);
     }
 
     private InputStream getTextFileInputStream(String filePath) {
         try {
             return mContext.getAssets().open(filePath);
         } catch (IOException e) {
-            throw new RuntimeException(String.format("File %s in assets folder not found", filePath));
+            return null;
         }
     }
 

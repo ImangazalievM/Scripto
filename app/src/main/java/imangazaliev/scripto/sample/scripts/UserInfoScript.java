@@ -1,14 +1,14 @@
 package imangazaliev.scripto.sample.scripts;
 
-import imangazaliev.scripto.java.FunctionName;
-import imangazaliev.scripto.java.ScriptoFunctionCall;
+import imangazaliev.scripto.js.JavaScriptFunctionCall;
+import imangazaliev.scripto.js.JsFunctionName;
 import imangazaliev.scripto.sample.User;
 
 public interface UserInfoScript {
 
-    ScriptoFunctionCall<Void> loadUserData();
+    JavaScriptFunctionCall<Void> loadUserData();
 
-    @FunctionName("getUserData")
-    ScriptoFunctionCall<User> getUser();
+    @JsFunctionName("getUserData")
+    JavaScriptFunctionCall<User> getUser();
 
 }

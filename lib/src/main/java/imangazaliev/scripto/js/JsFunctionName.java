@@ -1,4 +1,4 @@
-package imangazaliev.scripto.java;
+package imangazaliev.scripto.js;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FunctionName {
+public @interface JsFunctionName {
 
     String value();
 

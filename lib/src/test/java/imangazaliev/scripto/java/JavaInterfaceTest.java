@@ -1,19 +1,20 @@
-package imangazaliev.scripto.js;
+package imangazaliev.scripto.java;
 
 import android.webkit.WebView;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.powermock.modules.junit4.rule.PowerMockRule;
 
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.ScriptoException;
 import imangazaliev.scripto.converter.JavaConverter;
 import imangazaliev.scripto.converter.JavaScriptConverter;
+import imangazaliev.scripto.java.JavaInterface;
+import imangazaliev.scripto.java.JavaInterfaceConfig;
+import imangazaliev.scripto.java.ScriptoSecureException;
 import imangazaliev.scripto.test.BaseTest;
 import imangazaliev.scripto.test.TestJsInterface;
 
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ScriptoInterfaceTest extends BaseTest {
+public class JavaInterfaceTest extends BaseTest {
 
     private final String interfaceTag = "MyTag";
     
@@ -49,7 +50,7 @@ public class ScriptoInterfaceTest extends BaseTest {
 
     @Test()
     public void testMethodCall() {
-        ScriptoInterface javaInterface = new ScriptoInterface(scripto, interfaceTag, jsInterfaceObj);
+        JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, jsInterfaceObj);
         javaInterface.call("showAlert", "[]");
 
         verify(jsInterfaceObj).showAlert();
@@ -57,7 +58,7 @@ public class ScriptoInterfaceTest extends BaseTest {
 
     @Test(expected = ScriptoException.class)
     public void testInvalidMethodNameCall() {
-        ScriptoInterface javaInterface = new ScriptoInterface(scripto, interfaceTag, jsInterfaceObj);
+        JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, jsInterfaceObj);
         javaInterface.call("myInvalidMethodName", "[]");
 
         verify(jsInterfaceObj).showAlert();
@@ -65,7 +66,7 @@ public class ScriptoInterfaceTest extends BaseTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidArguments() {
-        ScriptoInterface javaInterface = new ScriptoInterface(scripto, interfaceTag, jsInterfaceObj);
+        JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, jsInterfaceObj);
         javaInterface.call("showAlert", "myInvalidArgs");
 
         verify(jsInterfaceObj).showAlert();
@@ -73,7 +74,7 @@ public class ScriptoInterfaceTest extends BaseTest {
 
     @Test()
     public void testMethodCallWithArgs() {
-        ScriptoInterface javaInterface = new ScriptoInterface(scripto, interfaceTag, jsInterfaceObj);
+        JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, jsInterfaceObj);
         javaInterface.call("showMessage", "[\"MyText\"]");
 
         verify(javaConverter).toObject("MyText", String.class);
@@ -82,7 +83,7 @@ public class ScriptoInterfaceTest extends BaseTest {
 
     @Test()
     public void testMethodCallWithCallback() {
-        ScriptoInterface javaInterface = new ScriptoInterface(scripto, interfaceTag, jsInterfaceObj);
+        JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, jsInterfaceObj);
         javaInterface.callWithCallback("getName", "[]", "my_code");
 
         verify(jsInterfaceObj).getName();
@@ -92,7 +93,7 @@ public class ScriptoInterfaceTest extends BaseTest {
 
     @Test()
     public void testMethodCallWithCallbackResponseNull() {
-        ScriptoInterface javaInterface = new ScriptoInterface(scripto, interfaceTag, jsInterfaceObj);
+        JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, jsInterfaceObj);
         javaInterface.callWithCallback("getNull", "[]", "my_code");
 
         verify(jsInterfaceObj).getNull();
@@ -102,11 +103,11 @@ public class ScriptoInterfaceTest extends BaseTest {
 
     @Test()
     public void testMethodCallWithAnnotationProtection() {
-        ScriptoInterfaceConfig config = new ScriptoInterfaceConfig();
+        JavaInterfaceConfig config = new JavaInterfaceConfig();
         config.enableAnnotationProtection(true);
         TestJsInterface testJsInterface = new TestJsInterface();
 
-        ScriptoInterface javaInterface = new ScriptoInterface(scripto, interfaceTag, testJsInterface, config);
+        JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, testJsInterface, config);
         javaInterface.callWithCallback("resetAll", "[]", "my_code");
 
         //verify(testJsInterface).resetAll();
@@ -115,13 +116,13 @@ public class ScriptoInterfaceTest extends BaseTest {
 
     @Test()
     public void testMethodCallWithInvalidAnnotationProtection() {
-        ScriptoInterfaceConfig config = new ScriptoInterfaceConfig();
+        JavaInterfaceConfig config = new JavaInterfaceConfig();
         config.enableAnnotationProtection(true);
         Scripto.ErrorHandler handler = mock(Scripto.ErrorHandler.class);
         when(scripto.getErrorHandler()).thenReturn(handler);
         TestJsInterface testJsInterface = new TestJsInterface();
 
-        ScriptoInterface javaInterface = new ScriptoInterface(scripto, interfaceTag, testJsInterface, config);
+        JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, testJsInterface, config);
         javaInterface.callWithCallback("killAll", "[]", "my_code");
 
         verify(handler).onError(any(ScriptoSecureException.class));

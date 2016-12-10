@@ -1,20 +1,19 @@
-package imangazaliev.scripto.java;
+package imangazaliev.scripto.js;
 
 import java.lang.reflect.Method;
 
 import imangazaliev.scripto.Scripto;
-import imangazaliev.scripto.utils.ScriptoUtils;
 
 /**
  * Вызывает JavaScript функции
  */
-public class ScriptoFunction {
+public class JavaScriptFunction {
 
     private Scripto scripto;
     private final String proxyId;
     final String jsFunction;
 
-    public ScriptoFunction(Scripto scripto, String jsVariableName, Method method, Object[] args, String proxyId) {
+    public JavaScriptFunction(Scripto scripto, String jsVariableName, Method method, Object[] args, String proxyId) {
         this.scripto = scripto;
         this.proxyId = proxyId;
         this.jsFunction = buildJavaScriptFunctionCall(jsVariableName, method, args);
@@ -50,7 +49,7 @@ public class ScriptoFunction {
     }
 
     private String getFunctionName(Method method) {
-        return method.isAnnotationPresent(FunctionName.class) ? method.getAnnotation(FunctionName.class).value() : method.getName();
+        return method.isAnnotationPresent(JsFunctionName.class) ? method.getAnnotation(JsFunctionName.class).value() : method.getName();
     }
 
     /**

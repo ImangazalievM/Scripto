@@ -3,7 +3,7 @@ package imangazaliev.scripto.sample.interfaces;
 import android.content.Context;
 import android.widget.Toast;
 
-import imangazaliev.scripto.js.ScriptoSecure;
+import imangazaliev.scripto.java.ScriptoSecure;
 
 public class AndroidInterface {
 

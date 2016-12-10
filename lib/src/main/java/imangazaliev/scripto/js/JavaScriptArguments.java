@@ -1,4 +1,4 @@
-package imangazaliev.scripto.java;
+package imangazaliev.scripto.js;
 
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.converter.JavaScriptConverter;

@@ -1,24 +1,24 @@
 package imangazaliev.scripto.test;
 
-import imangazaliev.scripto.java.FunctionName;
-import imangazaliev.scripto.java.JsVariableName;
-import imangazaliev.scripto.java.RawResponse;
-import imangazaliev.scripto.java.ScriptoFunctionCall;
+import imangazaliev.scripto.js.JavaScriptFunctionCall;
+import imangazaliev.scripto.js.JsFunctionName;
+import imangazaliev.scripto.js.JsVariableName;
+import imangazaliev.scripto.js.RawResponse;
 
 public interface JsTestScript {
 
-    ScriptoFunctionCall<String> getName();
+    JavaScriptFunctionCall<String> getName();
 
-    ScriptoFunctionCall<RawResponse> getData();
+    JavaScriptFunctionCall<RawResponse> getData();
 
-    ScriptoFunctionCall<CustomTestModel> getCustomModel();
+    JavaScriptFunctionCall<CustomTestModel> getCustomModel();
 
-    ScriptoFunctionCall<Void> initProfile();
+    JavaScriptFunctionCall<Void> initProfile();
 
     @JsVariableName("settings")
-    ScriptoFunctionCall<Void> setFontSize();
+    JavaScriptFunctionCall<Void> setFontSize();
 
-    @FunctionName("getUserLogin")
-    ScriptoFunctionCall<String> getLogin();
+    @JsFunctionName("getUserLogin")
+    JavaScriptFunctionCall<String> getLogin();
 
 }

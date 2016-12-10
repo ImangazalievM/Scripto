@@ -9,10 +9,9 @@ import android.widget.Toast;
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.ScriptoException;
 import imangazaliev.scripto.ScriptoPrepareListener;
-import imangazaliev.scripto.java.ScriptoErrorCallback;
-import imangazaliev.scripto.java.ScriptoResponseCallback;
-import imangazaliev.scripto.js.ScriptoInterfaceConfig;
-import imangazaliev.scripto.js.ScriptoSecureException;
+import imangazaliev.scripto.js.JavaScriptCallErrorCallback;
+import imangazaliev.scripto.js.JavaScriptCallResponseCallback;
+import imangazaliev.scripto.java.JavaInterfaceConfig;
 import imangazaliev.scripto.sample.interfaces.AndroidInterface;
 import imangazaliev.scripto.sample.interfaces.PreferencesInterface;
 import imangazaliev.scripto.sample.scripts.UserInfoScript;
@@ -32,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         WebView webView = (WebView) findViewById(R.id.web_view);
 
         scripto = new Scripto.Builder(webView).build();
-        scripto.addInterface("Android", new AndroidInterface(this), new ScriptoInterfaceConfig().enableAnnotationProtection(true));
-        scripto.addInterface("Preferences", new PreferencesInterface(this), new ScriptoInterfaceConfig());
+        scripto.addInterface("Android", new AndroidInterface(this), new JavaInterfaceConfig().enableAnnotationProtection(true));
+        scripto.addInterface("Preferences", new PreferencesInterface(this), new JavaInterfaceConfig());
         scripto.addJsScriptFromAssets("scripto/scripto.js");
         scripto.addJsScriptFromAssets("interfaces/android_interface.js");
         scripto.addJsScriptFromAssets("interfaces/preferences_interface.js");
@@ -61,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void getUserData(View view) {
         userInfoScript.getUser()
-                .onResponse(new ScriptoResponseCallback<User>() {
+                .onResponse(new JavaScriptCallResponseCallback<User>() {
                     @Override
                     public void onResponse(User user) {
                         Toast.makeText(MainActivity.this, user.getUserInfo(), Toast.LENGTH_SHORT).show();
                     }
-                }).onError(new ScriptoErrorCallback() {
+                }).onError(new JavaScriptCallErrorCallback() {
                     @Override
                     public void onError(ScriptoException error) {
                         Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();

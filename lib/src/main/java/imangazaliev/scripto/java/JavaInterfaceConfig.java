@@ -1,14 +1,14 @@
-package imangazaliev.scripto.js;
+package imangazaliev.scripto.java;
 
-public class ScriptoInterfaceConfig {
+public class JavaInterfaceConfig {
 
     private boolean annotationProtectionEnabled;
 
-    public ScriptoInterfaceConfig() {
+    public JavaInterfaceConfig() {
         annotationProtectionEnabled = false;
     }
 
-    public ScriptoInterfaceConfig enableAnnotationProtection(boolean annotationProtectionEnabled) {
+    public JavaInterfaceConfig enableAnnotationProtection(boolean annotationProtectionEnabled) {
         this.annotationProtectionEnabled = annotationProtectionEnabled;
         return this;
     }

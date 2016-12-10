@@ -1,4 +1,4 @@
-package imangazaliev.scripto.js;
+package imangazaliev.scripto.java;
 
 import imangazaliev.scripto.ScriptoException;
 

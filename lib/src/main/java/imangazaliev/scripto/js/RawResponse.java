@@ -1,4 +1,4 @@
-package imangazaliev.scripto.java;
+package imangazaliev.scripto.js;
 
 public class RawResponse {
 

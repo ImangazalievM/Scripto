@@ -1,8 +1,9 @@
-package imangazaliev.scripto.js;
+package imangazaliev.scripto.java;
 
 import org.json.JSONObject;
 import org.junit.Test;
 
+import imangazaliev.scripto.java.JavaArguments;
 import imangazaliev.scripto.test.BaseTest;
 
 import static junit.framework.Assert.assertEquals;

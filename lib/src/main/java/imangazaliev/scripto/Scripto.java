@@ -3,18 +3,15 @@ package imangazaliev.scripto;
 import android.util.Base64;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import imangazaliev.scripto.converter.JavaConverter;
 import imangazaliev.scripto.converter.JavaScriptConverter;
-import imangazaliev.scripto.java.ScriptoProxy;
-import imangazaliev.scripto.js.ScriptoInterface;
-import imangazaliev.scripto.js.ScriptoInterfaceConfig;
-import imangazaliev.scripto.js.ScriptoSecureException;
+import imangazaliev.scripto.js.ScriptoProxy;
+import imangazaliev.scripto.java.JavaInterface;
+import imangazaliev.scripto.java.JavaInterfaceConfig;
 import imangazaliev.scripto.utils.ScriptoAssetsJavaScriptReader;
 import imangazaliev.scripto.utils.ScriptoUtils;
 
@@ -140,10 +137,10 @@ public class Scripto {
     }
 
     public void addInterface(String tag, Object jsInterface) {
-        addInterface(tag, jsInterface, new ScriptoInterfaceConfig());
+        addInterface(tag, jsInterface, new JavaInterfaceConfig());
     }
 
-    public void addInterface(String tag, Object jsInterface, ScriptoInterfaceConfig config) {
+    public void addInterface(String tag, Object jsInterface, JavaInterfaceConfig config) {
         if (tag == null) {
             throw new NullPointerException("Tag object can't be null");
         }
@@ -156,7 +153,7 @@ public class Scripto {
             throw new NullPointerException("Config object can't be null");
         }
 
-        webView.addJavascriptInterface(new ScriptoInterface(this, tag, jsInterface, config), tag);
+        webView.addJavascriptInterface(new JavaInterface(this, tag, jsInterface, config), tag);
     }
 
     public void removeInterface(String tag) {

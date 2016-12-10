@@ -1,4 +1,4 @@
-package imangazaliev.scripto.java;
+package imangazaliev.scripto.js;
 
 import android.webkit.JavascriptInterface;
 
@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.ScriptoException;
-import imangazaliev.scripto.utils.ScriptoAssetsJavaScriptReader;
 import imangazaliev.scripto.utils.ScriptoLogUtils;
 import imangazaliev.scripto.utils.ScriptoUtils;
 import imangazaliev.scripto.utils.StringUtils;
@@ -20,7 +19,7 @@ public class ScriptoProxy implements InvocationHandler {
     private Scripto scripto;
     private String jsVariableName;
     private String proxyId;
-    private HashMap<String, ScriptoFunctionCall> functionCalls;
+    private HashMap<String, JavaScriptFunctionCall> functionCalls;
 
     public ScriptoProxy(Scripto scripto, Class<?> scriptClass) {
         this.scripto = scripto;
@@ -44,14 +43,14 @@ public class ScriptoProxy implements InvocationHandler {
             return method.invoke(this, args);
         }
 
-        ScriptoFunction scriptoFunction = new ScriptoFunction(scripto, jsVariableName, method, args, proxyId);
+        JavaScriptFunction javaScriptFunction = new JavaScriptFunction(scripto, jsVariableName, method, args, proxyId);
         Class<?> returnType = ScriptoUtils.getCallResponseType(method);
         String callCode = StringUtils.randomNumericString(5);
 
-        ScriptoFunctionCall scriptoFunctionCall = new ScriptoFunctionCall(scriptoFunction, returnType, callCode);
-        functionCalls.put(callCode, scriptoFunctionCall);
+        JavaScriptFunctionCall javaScriptFunctionCall = new JavaScriptFunctionCall(javaScriptFunction, returnType, callCode);
+        functionCalls.put(callCode, javaScriptFunctionCall);
 
-        return scriptoFunctionCall;
+        return javaScriptFunctionCall;
     }
 
     @JavascriptInterface
@@ -69,8 +68,8 @@ public class ScriptoProxy implements InvocationHandler {
             return;
         }
 
-        ScriptoFunctionCall functionCall = functionCalls.remove(callbackCode);
-        ScriptoResponseCallback callback = functionCall.getResponseCallback();
+        JavaScriptFunctionCall functionCall = functionCalls.remove(callbackCode);
+        JavaScriptCallResponseCallback callback = functionCall.getResponseCallback();
 
         if (callback == null) {
             return;
@@ -80,19 +79,19 @@ public class ScriptoProxy implements InvocationHandler {
         if (responseString == null || responseType.isAssignableFrom(Void.class)) {
             //если ответ не получен (null) или функция ничего не должна возвращать(Void), передаем null
             callback.onResponse(null);
-            ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
+            ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getJavaScriptFunction().getJsFunction()));
         } else if (responseType.isAssignableFrom(RawResponse.class)) {
             //возвращаем ответ без конвертации
             callback.onResponse(new RawResponse(responseString));
-            ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
+            ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getJavaScriptFunction().getJsFunction()));
         } else {
             try {
                 Object response = scripto.getJavaConverter().toObject(responseString, responseType);
                 callback.onResponse(response);
-                ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getScriptoFunction().getJsFunction()));
+                ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getJavaScriptFunction().getJsFunction()));
             } catch (JsonSyntaxException e) {
                 ScriptoException error =  new ScriptoException("Ошибка при конвертации JSON из JS", e);
-                ScriptoLogUtils.logError(error, String.format("Function '%s' call error", functionCall.getScriptoFunction().getJsFunction()));
+                ScriptoLogUtils.logError(error, String.format("Function '%s' call error", functionCall.getJavaScriptFunction().getJsFunction()));
                 onError(functionCall, error);
             }
         }
@@ -113,13 +112,13 @@ public class ScriptoProxy implements InvocationHandler {
             return;
         }
 
-        ScriptoFunctionCall functionCall = functionCalls.remove(callbackCode);
-        ScriptoLogUtils.logError(String.format("Function '%s' call error. Message: %s", functionCall.getScriptoFunction().getJsFunction(), message));
+        JavaScriptFunctionCall functionCall = functionCalls.remove(callbackCode);
+        ScriptoLogUtils.logError(String.format("Function '%s' call error. Message: %s", functionCall.getJavaScriptFunction().getJsFunction(), message));
         onError(functionCall, new JavaScriptException(message));
     }
 
-    private void onError(ScriptoFunctionCall functionCall, ScriptoException error) {
-        ScriptoErrorCallback callback = functionCall.getErrorCallback();
+    private void onError(JavaScriptFunctionCall functionCall, ScriptoException error) {
+        JavaScriptCallErrorCallback callback = functionCall.getErrorCallback();
         if (callback == null && functionCall.isThrowOnError()) {
             throw error;
         } else if (callback != null) {

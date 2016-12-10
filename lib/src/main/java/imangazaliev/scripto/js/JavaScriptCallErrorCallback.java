@@ -1,8 +1,8 @@
-package imangazaliev.scripto.java;
+package imangazaliev.scripto.js;
 
 import imangazaliev.scripto.ScriptoException;
 
-public interface ScriptoErrorCallback {
+public interface JavaScriptCallErrorCallback {
 
     void onError(ScriptoException error);
 

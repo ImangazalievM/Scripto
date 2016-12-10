@@ -1,10 +1,11 @@
-package imangazaliev.scripto.java;
+package imangazaliev.scripto.js;
 
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import imangazaliev.scripto.Scripto;
+import imangazaliev.scripto.js.JavaScriptArguments;
 import imangazaliev.scripto.test.BaseTest;
 
 import static junit.framework.Assert.assertEquals;

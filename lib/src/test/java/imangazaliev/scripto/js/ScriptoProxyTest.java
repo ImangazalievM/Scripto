@@ -1,4 +1,4 @@
-package imangazaliev.scripto.java;
+package imangazaliev.scripto.js;
 
 import android.webkit.WebView;
 
@@ -16,6 +16,13 @@ import java.lang.reflect.Method;
 
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.converter.JavaConverter;
+import imangazaliev.scripto.js.JavaScriptCallErrorCallback;
+import imangazaliev.scripto.js.JavaScriptCallResponseCallback;
+import imangazaliev.scripto.js.JavaScriptException;
+import imangazaliev.scripto.js.JavaScriptFunction;
+import imangazaliev.scripto.js.JavaScriptFunctionCall;
+import imangazaliev.scripto.js.RawResponse;
+import imangazaliev.scripto.js.ScriptoProxy;
 import imangazaliev.scripto.test.BaseTestPowerMock;
 import imangazaliev.scripto.test.CustomTestModel;
 import imangazaliev.scripto.test.JsTestScript;
@@ -30,7 +37,7 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.verifyNew;
 
 
-@PrepareForTest({StringUtils.class, ScriptoUtils.class, ScriptoProxy.class,  ScriptoFunction.class})
+@PrepareForTest({StringUtils.class, ScriptoUtils.class, ScriptoProxy.class,  JavaScriptFunction.class})
 public class ScriptoProxyTest extends BaseTestPowerMock {
 
     private final String proxyId = "adrgb";
@@ -49,7 +56,7 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
     @Mock
     WebView webview;
     @Mock
-    ScriptoFunction scriptoFunction;
+    JavaScriptFunction mJavaScriptFunction;
     @Mock
     JavaConverter javaConverter;
 
@@ -106,27 +113,27 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
             }
         });
 
-        PowerMockito.whenNew(ScriptoFunction.class).withAnyArguments().thenReturn(scriptoFunction);
+        PowerMockito.whenNew(JavaScriptFunction.class).withAnyArguments().thenReturn(mJavaScriptFunction);
     }
 
     @Test
     public void testMethodCall() throws Throwable {
         ScriptoProxy scriptoProxy = new ScriptoProxy(scripto, JsTestScript.class);
-        ScriptoFunctionCall<String> call = (ScriptoFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
+        JavaScriptFunctionCall<String> call = (JavaScriptFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
 
         verify(webview).addJavascriptInterface(scriptoProxy, proxyId);
-        verify(scriptoFunction, never()).callJavaScriptFunction(callCode);
+        verify(mJavaScriptFunction, never()).callJavaScriptFunction(callCode);
 
         call.call();
-        verify(scriptoFunction).callJavaScriptFunction(callCode);
+        verify(mJavaScriptFunction).callJavaScriptFunction(callCode);
     }
 
     @Test
     public void testMethodCallWithResponse() throws Throwable {
-        ScriptoResponseCallback<String> callback = mock(ScriptoResponseCallback.class);
+        JavaScriptCallResponseCallback<String> callback = mock(JavaScriptCallResponseCallback.class);
         ScriptoProxy scriptoProxy = new ScriptoProxy(scripto, JsTestScript.class);
 
-        ScriptoFunctionCall<String> call = (ScriptoFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
+        JavaScriptFunctionCall<String> call = (JavaScriptFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
         call.onResponse(callback);
         call.call();
 
@@ -136,10 +143,10 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
 
     @Test
     public void testMethodDoubleCallWithResponse() throws Throwable {
-        ScriptoResponseCallback<String> callback = mock(ScriptoResponseCallback.class);
+        JavaScriptCallResponseCallback<String> callback = mock(JavaScriptCallResponseCallback.class);
         ScriptoProxy scriptoProxy = new ScriptoProxy(scripto, JsTestScript.class);
 
-        ScriptoFunctionCall<String> call = (ScriptoFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
+        JavaScriptFunctionCall<String> call = (JavaScriptFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
         call.onResponse(callback);
         call.call();
 
@@ -151,10 +158,10 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
 
     @Test
     public void testMethodCallWithNullResponse() throws Throwable {
-        ScriptoResponseCallback<String> callback = mock(ScriptoResponseCallback.class);
+        JavaScriptCallResponseCallback<String> callback = mock(JavaScriptCallResponseCallback.class);
         ScriptoProxy scriptoProxy = new ScriptoProxy(scripto, JsTestScript.class);
 
-        ScriptoFunctionCall<String> call = (ScriptoFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
+        JavaScriptFunctionCall<String> call = (JavaScriptFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
         call.onResponse(callback);
         call.call();
 
@@ -165,11 +172,11 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
 
     @Test
     public void testMethodCallWithRawResponse() throws Throwable {
-        ScriptoResponseCallback<RawResponse> callback = mock(ScriptoResponseCallback.class);
+        JavaScriptCallResponseCallback<RawResponse> callback = mock(JavaScriptCallResponseCallback.class);
         ScriptoProxy scriptoProxy = new ScriptoProxy(scripto, JsTestScript.class);
         PowerMockito.whenNew(RawResponse.class).withArguments(jsResponse).thenReturn(rawResponse);
 
-        ScriptoFunctionCall<RawResponse> call = (ScriptoFunctionCall<RawResponse>) scriptoProxy.invoke(null, methodGetData, args);
+        JavaScriptFunctionCall<RawResponse> call = (JavaScriptFunctionCall<RawResponse>) scriptoProxy.invoke(null, methodGetData, args);
         call.onResponse(callback);
         call.call();
 
@@ -180,11 +187,11 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
 
     @Test
     public void testMethodCallWithCustomClassResponse() throws Throwable {
-        ScriptoResponseCallback<CustomTestModel> callback = mock(ScriptoResponseCallback.class);
+        JavaScriptCallResponseCallback<CustomTestModel> callback = mock(JavaScriptCallResponseCallback.class);
         ScriptoProxy scriptoProxy = new ScriptoProxy(scripto, JsTestScript.class);
         when(javaConverter.toObject(jsonResponse, CustomTestModel.class)).thenReturn(customTestModel);
 
-        ScriptoFunctionCall<CustomTestModel> call = (ScriptoFunctionCall<CustomTestModel>) scriptoProxy.invoke(null, methodCustomModel, args);
+        JavaScriptFunctionCall<CustomTestModel> call = (JavaScriptFunctionCall<CustomTestModel>) scriptoProxy.invoke(null, methodCustomModel, args);
         call.onResponse(callback);
         call.call();
 
@@ -196,11 +203,11 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
 
     @Test
     public void testMethodCallWithError() throws Throwable {
-        ScriptoErrorCallback callback = mock(ScriptoErrorCallback.class);
+        JavaScriptCallErrorCallback callback = mock(JavaScriptCallErrorCallback.class);
         ScriptoProxy scriptoProxy = new ScriptoProxy(scripto, JsTestScript.class);
         PowerMockito.whenNew(JavaScriptException.class).withArguments(jsErrorMessage).thenReturn(jsException);
 
-        ScriptoFunctionCall<String> call = (ScriptoFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
+        JavaScriptFunctionCall<String> call = (JavaScriptFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
         call.onError(callback);
         call.call();
 
@@ -210,11 +217,11 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
 
     @Test
     public void testMethodDoubleCallWithError() throws Throwable {
-        ScriptoErrorCallback callback = mock(ScriptoErrorCallback.class);
+        JavaScriptCallErrorCallback callback = mock(JavaScriptCallErrorCallback.class);
         ScriptoProxy scriptoProxy = new ScriptoProxy(scripto, JsTestScript.class);
         PowerMockito.whenNew(JavaScriptException.class).withArguments(jsErrorMessage).thenReturn(jsException);
 
-        ScriptoFunctionCall<String> call = (ScriptoFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
+        JavaScriptFunctionCall<String> call = (JavaScriptFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
         call.onError(callback);
         call.call();
 

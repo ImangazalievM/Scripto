@@ -1,6 +1,6 @@
 package imangazaliev.scripto.test;
 
-import imangazaliev.scripto.js.ScriptoSecure;
+import imangazaliev.scripto.java.ScriptoSecure;
 
 public class TestJsInterface {
 

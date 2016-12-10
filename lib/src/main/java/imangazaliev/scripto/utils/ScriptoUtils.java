@@ -7,9 +7,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import imangazaliev.scripto.java.JsVariableName;
-import imangazaliev.scripto.java.ScriptoFunctionCall;
-import imangazaliev.scripto.js.ScriptoSecure;
+import imangazaliev.scripto.js.JavaScriptFunctionCall;
+import imangazaliev.scripto.java.ScriptoSecure;
 
 public class ScriptoUtils {
 
@@ -45,10 +44,10 @@ public class ScriptoUtils {
     public static Class<?> getCallResponseType(Method method) {
         Type returnType = method.getReturnType();
         Type returnGenericType = method.getGenericReturnType();
-        //метод обязательно должен возвращать ScriptoFunctionCall
+        //метод обязательно должен возвращать JavaScriptFunctionCall
         if (!(returnGenericType instanceof ParameterizedType)
-                || !(method.getReturnType().isAssignableFrom(ScriptoFunctionCall.class))) {
-            throw new IllegalArgumentException("Call return type must be parameterized as ScriptoFunctionCall<Foo>" + (returnType == null) + " " + (returnGenericType == null));
+                || !(method.getReturnType().isAssignableFrom(JavaScriptFunctionCall.class))) {
+            throw new IllegalArgumentException("Call return type must be parameterized as JavaScriptFunctionCall<Foo>" + (returnType == null) + " " + (returnGenericType == null));
         }
 
         return (Class<?>) ((ParameterizedType) returnGenericType).getActualTypeArguments()[0];

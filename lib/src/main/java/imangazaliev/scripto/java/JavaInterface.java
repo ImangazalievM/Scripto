@@ -1,4 +1,4 @@
-package imangazaliev.scripto.js;
+package imangazaliev.scripto.java;
 
 import android.webkit.JavascriptInterface;
 
@@ -15,18 +15,18 @@ import imangazaliev.scripto.utils.ScriptoUtils;
 /**
  * Интерфейс для вызова методов из JavaScript
  */
-public class ScriptoInterface {
+public class JavaInterface {
 
     private Scripto scripto;
     private Object interfaceObject;
     private String tag;
     private boolean annotationProtectionEnabled;
 
-    public ScriptoInterface(Scripto scripto, String tag, Object jsInterface) {
-        this(scripto, tag, jsInterface, new ScriptoInterfaceConfig());
+    public JavaInterface(Scripto scripto, String tag, Object jsInterface) {
+        this(scripto, tag, jsInterface, new JavaInterfaceConfig());
     }
 
-    public ScriptoInterface(Scripto scripto, String tag, Object jsInterface, ScriptoInterfaceConfig config) {
+    public JavaInterface(Scripto scripto, String tag, Object jsInterface, JavaInterfaceConfig config) {
         this.scripto = scripto;
         this.interfaceObject = jsInterface;
         this.tag = tag;

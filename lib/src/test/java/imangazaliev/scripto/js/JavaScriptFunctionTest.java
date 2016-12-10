@@ -32,28 +32,28 @@ public class JavaScriptFunctionTest extends BaseTest {
     }
 
     @Test
-    public void testScriptoFunction() {
+    public void testJavaScriptFunction() {
         JavaScriptFunction function = new JavaScriptFunction(scripto, null, methodInitProfile, args, "");
 
         assertEquals("initProfile('My text',55,true,null);", function.jsFunction);
     }
 
     @Test
-    public void testScriptoFunctionWithVariableName() {
+    public void testJavaScriptFunctionFunctionWithVariableName() {
         JavaScriptFunction function = new JavaScriptFunction(scripto, "myVar", methodInitProfile, args, "");
 
         assertEquals("myVar.initProfile('My text',55,true,null);", function.jsFunction);
     }
 
     @Test
-    public void testScriptoFunctionWithJsVariableNameAnnotation() throws NoSuchMethodException {
+    public void testJavaScriptFunctionFunctionWithJsVariableNameAnnotation() throws NoSuchMethodException {
         JavaScriptFunction function = new JavaScriptFunction(scripto, null, JsTestScript.class.getMethod("setFontSize"), new Object[] {14}, "");
 
         assertEquals("settings.setFontSize(14);", function.jsFunction);
     }
 
     @Test
-    public void testScriptoFunctionWithDifferentNames() throws NoSuchMethodException {
+    public void testJavaScriptFunctionFunctionWithDifferentNames() throws NoSuchMethodException {
         JavaScriptFunction function = new JavaScriptFunction(scripto, null, JsTestScript.class.getMethod("getLogin"), new Object[] {}, "");
 
         assertEquals("getUserLogin();", function.jsFunction);

@@ -15,14 +15,7 @@ import org.powermock.reflect.Whitebox;
 import java.lang.reflect.Method;
 
 import imangazaliev.scripto.Scripto;
-import imangazaliev.scripto.converter.JavaConverter;
-import imangazaliev.scripto.js.JavaScriptCallErrorCallback;
-import imangazaliev.scripto.js.JavaScriptCallResponseCallback;
-import imangazaliev.scripto.js.JavaScriptException;
-import imangazaliev.scripto.js.JavaScriptFunction;
-import imangazaliev.scripto.js.JavaScriptFunctionCall;
-import imangazaliev.scripto.js.RawResponse;
-import imangazaliev.scripto.js.ScriptoProxy;
+import imangazaliev.scripto.converter.JsonToJavaConverter;
 import imangazaliev.scripto.test.BaseTestPowerMock;
 import imangazaliev.scripto.test.CustomTestModel;
 import imangazaliev.scripto.test.JsTestScript;
@@ -58,7 +51,7 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
     @Mock
     JavaScriptFunction mJavaScriptFunction;
     @Mock
-    JavaConverter javaConverter;
+    JsonToJavaConverter mJsonToJavaConverter;
 
     Method methodGetName;
     Method methodGetData;
@@ -81,8 +74,8 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
         methodCustomModel = JsTestScript.class.getMethod("getCustomModel");
 
         when(scripto.getWebView()).thenReturn(webview);
-        when(scripto.getJavaConverter()).thenReturn(javaConverter);
-        when(javaConverter.toObject(jsResponse, String.class)).thenReturn(convertedJsResponse);
+        when(scripto.getJsonToJavaConverter()).thenReturn(mJsonToJavaConverter);
+        when(mJsonToJavaConverter.toObject(jsResponse, String.class)).thenReturn(convertedJsResponse);
     }
 
     private void initPowerMockito() throws Exception {
@@ -189,7 +182,7 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
     public void testMethodCallWithCustomClassResponse() throws Throwable {
         JavaScriptCallResponseCallback<CustomTestModel> callback = mock(JavaScriptCallResponseCallback.class);
         ScriptoProxy scriptoProxy = new ScriptoProxy(scripto, JsTestScript.class);
-        when(javaConverter.toObject(jsonResponse, CustomTestModel.class)).thenReturn(customTestModel);
+        when(mJsonToJavaConverter.toObject(jsonResponse, CustomTestModel.class)).thenReturn(customTestModel);
 
         JavaScriptFunctionCall<CustomTestModel> call = (JavaScriptFunctionCall<CustomTestModel>) scriptoProxy.invoke(null, methodCustomModel, args);
         call.onResponse(callback);

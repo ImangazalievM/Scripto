@@ -1,6 +1,6 @@
 package imangazaliev.scripto.test;
 
-import imangazaliev.scripto.java.ScriptoSecure;
+import imangazaliev.scripto.java.JavaScriptSecure;
 
 public class TestJsInterface {
 
@@ -20,7 +20,7 @@ public class TestJsInterface {
         return null;
     }
 
-    @ScriptoSecure
+    @JavaScriptSecure
     public void resetAll() {
 
     }

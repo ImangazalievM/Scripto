@@ -86,7 +86,7 @@ public class ScriptoProxy implements InvocationHandler {
             ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getJavaScriptFunction().getJsFunction()));
         } else {
             try {
-                Object response = scripto.getJavaConverter().toObject(responseString, responseType);
+                Object response = scripto.getJsonToJavaConverter().toObject(responseString, responseType);
                 callback.onResponse(response);
                 ScriptoLogUtils.logMessage(String.format("Function '%s' call success", functionCall.getJavaScriptFunction().getJsFunction()));
             } catch (JsonSyntaxException e) {

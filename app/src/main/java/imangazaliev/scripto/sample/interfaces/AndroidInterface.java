@@ -3,7 +3,7 @@ package imangazaliev.scripto.sample.interfaces;
 import android.content.Context;
 import android.widget.Toast;
 
-import imangazaliev.scripto.java.ScriptoSecure;
+import imangazaliev.scripto.java.JavaScriptSecure;
 
 public class AndroidInterface {
 
@@ -13,7 +13,7 @@ public class AndroidInterface {
         this.context = context;
     }
 
-    @ScriptoSecure
+    @JavaScriptSecure
     public void showToastMessage(String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }

@@ -28,25 +28,19 @@ function getLogin() {
 }
 ```
 
-Copy the file ```scripto.js``` from example project into assets and include it via Scripto:
-
-```java
-scripto.addJsScriptFromAssets("scripto.js");
-```
-
 To call a function we should create Java-interface with JS-functions description:
 
 ```java
 public interface LoginScript {
 
-    ScriptoFunctionCall<Void> setLogin(String login);
+    JavaScriptFunctionCall<Void> setLogin(String login);
 
-    ScriptoFunctionCall<String> getLogin();
+    JavaScriptFunctionCall<String> getLogin();
 
 }
 ```
 
-Methods should be return ScriptoFunctionCall. In the parameters of ScriptoFunctionCall we specify type of JS-function response. In our case the first function returns nothing (Void), and the second returns text (String).
+Methods should be return JavaScriptFunctionCall. In the parameters of JavaScriptFunctionCall we specify type of JS-function response. In our case the first function returns nothing (Void), and the second returns text (String).
 
 Then we should link Java-interface and JS-file:
 ```java
@@ -86,7 +80,7 @@ For the conversion of user-defined data type from JSON used GSON library.
 If you want to get raw JSON, then necessarily to use class RawReponse:
 
 ```java
- ScriptoFunctionCall<RawResponse> getJson();
+JavaScriptFunctionCall<RawResponse> getJson();
 ```
 
 Receiving JSON:
@@ -157,7 +151,7 @@ showToastMessage("My super message", function(responseString) {
 
 If you want to pass  user-defined data type from JavaScript, convert your data to JSON via ```JSON.stringify(object)```.
 
-If you need to protect methods from an unauthorized call, then you can protect them  ```@ScriptoSecure``` annotation:
+If you need to protect methods from an unauthorized call, then you can protect them  ```@JavaScriptSecure``` annotation:
 
 ```java
 ScriptoInterfaceConfig config = new ScriptoInterfaceConfig().enableAnnotationProtection(true);
@@ -168,7 +162,7 @@ scripto.addInterface("Android", new AndroidInterface(this), config);
 Do not forget to set an annotation on the method:
 
 ```java
-@ScriptoSecure
+@JavaScriptSecure
 public void showToastMessage(String text) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 }

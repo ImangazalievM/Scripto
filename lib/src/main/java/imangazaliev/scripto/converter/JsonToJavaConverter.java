@@ -2,17 +2,15 @@ package imangazaliev.scripto.converter;
 
 import com.google.gson.Gson;
 
-import imangazaliev.scripto.ScriptoException;
-
-public class JavaConverter {
+public class JsonToJavaConverter {
 
     private Gson gson;
 
-    public JavaConverter() {
+    public JsonToJavaConverter() {
         this(new Gson());
     }
 
-    public JavaConverter(Gson gson) {
+    public JsonToJavaConverter(Gson gson) {
         this.gson = gson;
     }
 

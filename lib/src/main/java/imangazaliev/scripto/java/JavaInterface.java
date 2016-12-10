@@ -49,7 +49,7 @@ public class JavaInterface {
             @Override
             public void run() {
                 Object response = callMethod(methodName, jsonArgs);
-                String responseJson = response == null ? "null" : scripto.getJavaScriptConverter().convertToString(response, response.getClass());
+                String responseJson = response == null ? "null" : scripto.getJavaToJsonConverter().convertToString(response, response.getClass());
                 String responseCall = String.format("Scripto.removeCallBack('%s', '%s')", callbackCode, responseJson);
                 scripto.getWebView().loadUrl("javascript:" + responseCall);
             }
@@ -85,14 +85,14 @@ public class JavaInterface {
     private Object[] convertArgs(Object[] argsObjects, Class<?>[] parameterTypes) {
         Object[] convertedArgs = new Object[argsObjects.length];
         for (int i = 0; i < argsObjects.length; i++) {
-            convertedArgs[i] = scripto.getJavaConverter().toObject(String.valueOf(argsObjects[i]), parameterTypes[i]);
+            convertedArgs[i] = scripto.getJsonToJavaConverter().toObject(String.valueOf(argsObjects[i]), parameterTypes[i]);
         }
         return convertedArgs;
     }
 
     private Object onJsonArgumentsConversionError(String methodName, String json, Exception e) {
         String errorMessage = String.format("JSON conversion error. Interface: %s, method: %s, json: %s", tag, methodName, json);
-        ScriptoSecureException error = new ScriptoSecureException(errorMessage, e);
+        JavaScriptSecureException error = new JavaScriptSecureException(errorMessage, e);
         if (scripto.getErrorHandler() != null) {
             scripto.getErrorHandler().onError(error);
             return null;
@@ -148,7 +148,7 @@ public class JavaInterface {
     }
 
     private Object onMethodProtectionError(String methodName) {
-        ScriptoSecureException error = new ScriptoSecureException("Method " + methodName + " not annotated with @ScriptoSecure annotation");
+        JavaScriptSecureException error = new JavaScriptSecureException("Method " + methodName + " not annotated with @JavaScriptSecure annotation");
         if (scripto.getErrorHandler() != null) {
             scripto.getErrorHandler().onError(error);
             return null;

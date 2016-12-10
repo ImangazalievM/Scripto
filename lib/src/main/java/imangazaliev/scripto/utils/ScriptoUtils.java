@@ -8,7 +8,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import imangazaliev.scripto.js.JavaScriptFunctionCall;
-import imangazaliev.scripto.java.ScriptoSecure;
+import imangazaliev.scripto.java.JavaScriptSecure;
 
 public class ScriptoUtils {
 
@@ -59,7 +59,7 @@ public class ScriptoUtils {
      */
 
     public static boolean hasSecureAnnotation(Method method) {
-        return method.isAnnotationPresent(ScriptoSecure.class);
+        return method.isAnnotationPresent(JavaScriptSecure.class);
     }
 
     public static void runOnUi(Runnable task) {

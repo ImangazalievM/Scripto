@@ -1,7 +1,7 @@
 package imangazaliev.scripto.js;
 
 import imangazaliev.scripto.Scripto;
-import imangazaliev.scripto.converter.JavaScriptConverter;
+import imangazaliev.scripto.converter.JavaToJsonConverter;
 import imangazaliev.scripto.utils.ScriptoUtils;
 
 public class JavaScriptArguments {
@@ -20,7 +20,7 @@ public class JavaScriptArguments {
             return new String[0];
         }
 
-        JavaScriptConverter javaScriptConverter = scripto.getJavaScriptConverter();
+        JavaToJsonConverter javaToJsonConverter = scripto.getJavaToJsonConverter();
         String[] resultArgs = new String[argsObjects.length];
 
         for (int i = 0; i < argsObjects.length; i++) {
@@ -37,7 +37,7 @@ public class JavaScriptArguments {
             } else {
                 //если аргумент является объектом, конвертируем в json
                 Object arg = argsObjects[i];
-                resultArgs[i] =  resultArgs[i] = String.format("'%s'", javaScriptConverter.convertToString(arg, arg.getClass()));
+                resultArgs[i] =  resultArgs[i] = String.format("'%s'", javaToJsonConverter.convertToString(arg, arg.getClass()));
             }
         }
         return resultArgs;

@@ -10,11 +10,8 @@ import org.mockito.Spy;
 
 import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.ScriptoException;
-import imangazaliev.scripto.converter.JavaConverter;
-import imangazaliev.scripto.converter.JavaScriptConverter;
-import imangazaliev.scripto.java.JavaInterface;
-import imangazaliev.scripto.java.JavaInterfaceConfig;
-import imangazaliev.scripto.java.ScriptoSecureException;
+import imangazaliev.scripto.converter.JsonToJavaConverter;
+import imangazaliev.scripto.converter.JavaToJsonConverter;
 import imangazaliev.scripto.test.BaseTest;
 import imangazaliev.scripto.test.TestJsInterface;
 
@@ -35,17 +32,17 @@ public class JavaInterfaceTest extends BaseTest {
     @Spy
     TestJsInterface jsInterfaceObj;
     @Spy
-    JavaConverter javaConverter;
+    JsonToJavaConverter mJsonToJavaConverter;
     @Spy
-    JavaScriptConverter javaScriptConverter;
+    JavaToJsonConverter mJavaToJsonConverter;
 
     @Override
     public void onSetup() {
         MockitoAnnotations.initMocks(this);
 
         when(scripto.getWebView()).thenReturn(webview);
-        when(scripto.getJavaConverter()).thenReturn(javaConverter);
-        when(scripto.getJavaScriptConverter()).thenReturn(javaScriptConverter);
+        when(scripto.getJsonToJavaConverter()).thenReturn(mJsonToJavaConverter);
+        when(scripto.getJavaToJsonConverter()).thenReturn(mJavaToJsonConverter);
     }
 
     @Test()
@@ -77,7 +74,7 @@ public class JavaInterfaceTest extends BaseTest {
         JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, jsInterfaceObj);
         javaInterface.call("showMessage", "[\"MyText\"]");
 
-        verify(javaConverter).toObject("MyText", String.class);
+        verify(mJsonToJavaConverter).toObject("MyText", String.class);
         verify(jsInterfaceObj).showMessage("MyText");
     }
 
@@ -87,7 +84,7 @@ public class JavaInterfaceTest extends BaseTest {
         javaInterface.callWithCallback("getName", "[]", "my_code");
 
         verify(jsInterfaceObj).getName();
-        verify(javaScriptConverter).convertToString("My name", String.class);
+        verify(mJavaToJsonConverter).convertToString("My name", String.class);
         verify(webview).loadUrl("javascript:Scripto.removeCallBack('my_code', '\"My name\"')");
     }
 
@@ -97,7 +94,7 @@ public class JavaInterfaceTest extends BaseTest {
         javaInterface.callWithCallback("getNull", "[]", "my_code");
 
         verify(jsInterfaceObj).getNull();
-        verify(javaScriptConverter, never()).convertToString(Mockito.anyString(), any(Class.class));
+        verify(mJavaToJsonConverter, never()).convertToString(Mockito.anyString(), any(Class.class));
         verify(webview).loadUrl("javascript:Scripto.removeCallBack('my_code', 'null')");
     }
 
@@ -125,7 +122,7 @@ public class JavaInterfaceTest extends BaseTest {
         JavaInterface javaInterface = new JavaInterface(scripto, interfaceTag, testJsInterface, config);
         javaInterface.callWithCallback("killAll", "[]", "my_code");
 
-        verify(handler).onError(any(ScriptoSecureException.class));
+        verify(handler).onError(any(JavaScriptSecureException.class));
     }
 
 }

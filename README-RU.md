@@ -26,25 +26,19 @@ function getLogin() {
 }
 ```
 
-Скопируйте файл ```scripto.js``` из примера в папку assets подключите его через Scripto:
-
-```java
-scripto.addJsScriptFromAssets("scripto.js");
-```
-
 Для вызова функций нам нужно создать Java-интерфейс с описанием JS-функций:
 
 ```java
 public interface LoginScript {
 
-    ScriptoFunctionCall<Void> setLogin(String login);
+    JavaScriptFunctionCall<Void> setLogin(String login);
 
-    ScriptoFunctionCall<String> getLogin();
+    JavaScriptFunctionCall<String> getLogin();
 
 }
 ```
 
-Методы обязательно должны возвращать ScriptoFunctionCall. В параметрах ScriptoFunctionCall мы указываем тип, возвращаемый JS-функцией. В нашем случае первая функция ничего не возвращает (Void), а вторая возвращает строку (String).
+Методы обязательно должны возвращать JavaScriptFunctionCall. В параметрах JavaScriptFunctionCall мы указываем тип, возвращаемый JS-функцией. В нашем случае первая функция ничего не возвращает (Void), а вторая возвращает строку (String).
 
 Далее нам нужно связать Java-интерфейс и JS-файл:
 ```java
@@ -85,7 +79,7 @@ loginScript.getLogin()
 Если вы хотите получить "голый" JSON, то обязательно используйте класс RawReponse:
 
 ```java
-ScriptoFunctionCall<RawResponse> getJson();
+JavaScriptFunctionCall<RawResponse> getJson();
 ```
 
 Получаем JSON:
@@ -104,9 +98,9 @@ public interface LoginScript {
 @JsVariableName("myVar")
 public interface LoginScript {
 
-    ScriptoFunctionCall<Void> setLogin(String login);
+    JavaScriptFunctionCall<Void> setLogin(String login);
 
-    ScriptoFunctionCall<String> getLogin();
+    JavaScriptFunctionCall<String> getLogin();
 
 }
 ```
@@ -115,14 +109,14 @@ public interface LoginScript {
 
 ```
 @JsVariableName("myVar")
-ScriptoFunctionCall<String> getLogin();
+JavaScriptFunctionCall<String> getLogin();
 ```
 
-Если названия метода и вызываемой функции должны быть разными, воспользуйтесь аннотацией @FunctionName:
+Если названия метода и вызываемой функции должны быть разными, воспользуйтесь аннотацией @JsFunctionName:
 
 ```
-@FunctionName("myFuncName")
-ScriptoFunctionCall<String> getLogin();
+@JsFunctionName("myFuncName")
+JavaScriptFunctionCall<String> getLogin();
 ```
 
 ### Вызов Java-методов из JavaScript
@@ -185,7 +179,7 @@ showToastMessage("My super message", function(responseString) {
 
 Если вам нужно передать из JavaScript пользовательский тип данных, сконвертируйте его в JSON при помощи ```JSON.stringify(object)```.
 
-Если вы хотите защитить методы от несанкционированного вызова, то вы можете использовать защиту при помощи аннотации ```@ScriptoSecure```:
+Если вы хотите защитить методы от несанкционированного вызова, то вы можете использовать защиту при помощи аннотации ```@JavaScriptSecure```:
 
 ```java
 ScriptoInterfaceConfig config = new ScriptoInterfaceConfig().enableAnnotationProtection(true);
@@ -195,7 +189,7 @@ scripto.addInterface("Android", new AndroidInterface(this), config);
 Не забудьте установить аннотацию над методом:
 
 ```java
-@ScriptoSecure
+@JavaScriptSecure
 public void showToastMessage(String text) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 }

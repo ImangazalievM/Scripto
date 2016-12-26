@@ -7,7 +7,7 @@
 # Подключение библиотеки
 
 ```gradle
-compile 'com.github.imangazalievm:scripto:2.0.0'
+compile 'com.github.imangazalievm:scripto:2.0.1'
 ```
 
 # Использование библиотеки

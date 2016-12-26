@@ -1,5 +1,6 @@
 package imangazaliev.scripto.java;
 
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import java.lang.reflect.InvocationTargetException;
@@ -62,6 +63,7 @@ public class JavaInterface {
         //получаем метод по имени и типам аргументов
         Method method = searchMethodByName(methodName, args);
 
+        //конвертируем JSON в объекты
         Object[] convertedArgs;
         try {
             convertedArgs = convertArgs(args.getArgs(), method.getParameterTypes());
@@ -75,7 +77,13 @@ public class JavaInterface {
             ScriptoLogUtils.logMessage(String.format("Method '%s' call success", methodName));
             return getMethodCallResponse(methodName, method, convertedArgs);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new ScriptoException("Method " + methodName + " call error", e);
+            ScriptoException error = new ScriptoException("Method " + methodName + " call error", e);
+            if (scripto.getErrorHandler() != null) {
+                scripto.getErrorHandler().onError(error);
+                return null;
+            } else {
+                throw error;
+            }
         }
     }
 

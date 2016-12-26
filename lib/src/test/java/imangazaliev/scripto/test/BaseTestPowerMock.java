@@ -2,6 +2,7 @@ package imangazaliev.scripto.test;
 
 import android.os.Build;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -24,6 +25,11 @@ public abstract class BaseTestPowerMock {
 
     @Rule
     public PowerMockRule rule = new PowerMockRule();
+
+    @Before
+    public void setup() throws Exception {
+        onSetup();
+    }
 
     public abstract void onSetup() throws Exception;
 }

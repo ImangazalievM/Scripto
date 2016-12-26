@@ -15,7 +15,12 @@ public class JsonToJavaConverter {
     }
 
     public <T> T toObject(String json, Class<T> type) {
+        if (type == String.class) {
+            return (T) json;
+        } else {
             return gson.fromJson(json, type);
+        }
+
     }
 
 

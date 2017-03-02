@@ -28,8 +28,8 @@ public class Scripto {
     }
 
     private WebView webView;
-    private JavaToJsonConverter mJavaToJsonConverter;
-    private JsonToJavaConverter mJsonToJavaConverter;
+    private JavaToJsonConverter javaToJsonConverter;
+    private JsonToJavaConverter jsonToJavaConverter;
 
     private ErrorHandler errorHandler;
     private ScriptoPrepareListener prepareListener;
@@ -39,8 +39,8 @@ public class Scripto {
 
     private Scripto(Builder builder) {
         this.webView = builder.webView;
-        this.mJavaToJsonConverter = builder.mJavaToJsonConverter;
-        this.mJsonToJavaConverter = builder.mJsonToJavaConverter;
+        this.javaToJsonConverter = builder.javaToJsonConverter;
+        this.jsonToJavaConverter = builder.jsonToJavaConverter;
 
         jsScripts = new ArrayList<>();
         scriptoAssetsJavaScriptReader = new ScriptoAssetsJavaScriptReader(webView.getContext());
@@ -139,11 +139,11 @@ public class Scripto {
     }
 
     public JavaToJsonConverter getJavaToJsonConverter() {
-        return mJavaToJsonConverter;
+        return javaToJsonConverter;
     }
 
     public JsonToJavaConverter getJsonToJavaConverter() {
-        return mJsonToJavaConverter;
+        return jsonToJavaConverter;
     }
 
     public void addInterface(String tag, Object jsInterface) {
@@ -186,15 +186,15 @@ public class Scripto {
 
         private WebView webView;
         private ScriptoWebViewClient scriptoWebViewClient;
-        private JavaToJsonConverter mJavaToJsonConverter;
-        private JsonToJavaConverter mJsonToJavaConverter;
+        private JavaToJsonConverter javaToJsonConverter;
+        private JsonToJavaConverter jsonToJavaConverter;
 
         public Builder(WebView webView) {
             this.webView = webView;
 
             this.scriptoWebViewClient = new ScriptoWebViewClient();
-            this.mJavaToJsonConverter = new JavaToJsonConverter();
-            this.mJsonToJavaConverter = new JsonToJavaConverter();
+            this.javaToJsonConverter = new JavaToJsonConverter();
+            this.jsonToJavaConverter = new JsonToJavaConverter();
         }
 
         public Builder setWebViewClient(ScriptoWebViewClient scriptoWebViewClient) {
@@ -205,13 +205,13 @@ public class Scripto {
 
         public Builder setJavaToJsonConverter(JavaToJsonConverter javaToJsonConverter) {
             ScriptoUtils.checkNotNull(javaToJsonConverter, "Converter can not be null");
-            this.mJavaToJsonConverter = javaToJsonConverter;
+            this.javaToJsonConverter = javaToJsonConverter;
             return this;
         }
 
         public Builder setJsonToJavaConverter(JsonToJavaConverter jsonToJavaConverter) {
             ScriptoUtils.checkNotNull(jsonToJavaConverter, "Converter can not be null");
-            this.mJsonToJavaConverter = jsonToJavaConverter;
+            this.jsonToJavaConverter = jsonToJavaConverter;
             return this;
         }
 

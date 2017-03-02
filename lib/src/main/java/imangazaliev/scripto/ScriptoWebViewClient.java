@@ -3,7 +3,7 @@ package imangazaliev.scripto;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class ScriptoWebViewClient extends WebViewClient{
+public class ScriptoWebViewClient extends WebViewClient {
 
     interface OnPageLoadedListener {
         void onPageLoaded();

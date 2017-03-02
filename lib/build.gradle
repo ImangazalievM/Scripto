@@ -60,7 +60,7 @@ publish {
     groupId = 'com.github.imangazalievm'
     artifactId = 'scripto'
     publishVersion = LIBRARY_VERSION_NAME
-    desc = 'Библиотека для удобного вызова JS функций из Java и наоборот'
+    desc = 'Java and JavaScript interaction library'
     licences = ['MIT']
     website = 'https://github.com/ImangazalievM/Scripto'
 }

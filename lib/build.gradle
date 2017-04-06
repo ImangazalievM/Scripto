@@ -5,12 +5,12 @@ final LIBRARY_VERSION_NAME = '2.0.1'
 final LIBRARY_VERSION_CODE = 14
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode LIBRARY_VERSION_CODE
         versionName LIBRARY_VERSION_NAME
     }

@@ -2,7 +2,7 @@ package imangazaliev.scripto.js;
 
 public class JavaScriptFunctionCall<T> {
 
-    private JavaScriptFunction mJavaScriptFunction;
+    private JavaScriptFunction javaScriptFunction;
     private String callCode;
 
     private JavaScriptCallResponseCallback<T> responseCallback;
@@ -12,14 +12,14 @@ public class JavaScriptFunctionCall<T> {
     private boolean throwOnError;
 
     public JavaScriptFunctionCall(JavaScriptFunction javaScriptFunction, Class<T> responseType, String callCode) {
-        this.mJavaScriptFunction = javaScriptFunction;
+        this.javaScriptFunction = javaScriptFunction;
         this.responseType = responseType;
         this.callCode = callCode;
         this.throwOnError = false;
     }
 
     JavaScriptFunction getJavaScriptFunction() {
-        return mJavaScriptFunction;
+        return javaScriptFunction;
     }
 
     public JavaScriptFunctionCall<T> onResponse(JavaScriptCallResponseCallback<T> responseCallback) {
@@ -57,7 +57,7 @@ public class JavaScriptFunctionCall<T> {
     }
 
     public void call() {
-        mJavaScriptFunction.callJavaScriptFunction(callCode);
+        javaScriptFunction.callJavaScriptFunction(callCode);
     }
 
 }

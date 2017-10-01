@@ -124,10 +124,10 @@ public class Scripto {
     }
 
     /**
-     * Создает прокси из интерфейс для вызова JS-функций
+     * Создает прокси из интерфейса для вызова JS-функций
      */
     public <T> T create(final Class<T> script) {
-        ScriptoUtils.checkNotNull(script, "Script class can not be null");
+        ScriptoUtils.checkNotNull(script, "Script class can't be null");
 
         //если объект не является интерфейсом, выбрасываем исключение
         ScriptoUtils.validateScriptInterface(script);
@@ -152,11 +152,11 @@ public class Scripto {
 
     public void addInterface(String tag, Object jsInterface, JavaInterfaceConfig config) {
         if (tag == null) {
-            throw new NullPointerException("Tag object can't be null");
+            throw new NullPointerException("Tag can't be null");
         }
 
         if (jsInterface == null) {
-            throw new NullPointerException("Tag can't be null");
+            throw new NullPointerException("JavaScript interface object can't be null");
         }
 
         if (config == null) {

@@ -13,14 +13,14 @@ import java.io.InputStreamReader;
  */
 public class ScriptoAssetsJavaScriptReader {
 
-    private Context mContext;
+    private Context context;
 
     public ScriptoAssetsJavaScriptReader(Context context) {
         if (context == null) {
             throw new IllegalArgumentException("Context не может быть null");
         }
 
-        this.mContext = context;
+        this.context = context;
     }
 
     /**
@@ -39,7 +39,7 @@ public class ScriptoAssetsJavaScriptReader {
 
     private InputStream getTextFileInputStream(String filePath) {
         try {
-            return mContext.getAssets().open(filePath);
+            return context.getAssets().open(filePath);
         } catch (IOException e) {
             return null;
         }

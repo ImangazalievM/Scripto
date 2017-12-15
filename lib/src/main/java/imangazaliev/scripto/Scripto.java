@@ -1,14 +1,11 @@
 package imangazaliev.scripto;
 
-import android.util.Base64;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-import java.io.InputStream;
 import java.lang.reflect.Proxy;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import imangazaliev.scripto.converter.JsonToJavaConverter;
 import imangazaliev.scripto.converter.JavaToJsonConverter;
@@ -23,6 +20,8 @@ import imangazaliev.scripto.utils.ScriptoUtils;
  */
 public class Scripto {
 
+    private static final String ASSETS_FOLDER_PATH = "file:///android_asset/";
+
     public interface ErrorHandler {
         void onError(ScriptoException error);
     }
@@ -35,14 +34,14 @@ public class Scripto {
     private ScriptoPrepareListener prepareListener;
 
     private ScriptoAssetsJavaScriptReader scriptoAssetsJavaScriptReader;
-    private ArrayList<String> jsScripts;
+    private ArrayList<String> jsFiles;
 
     private Scripto(Builder builder) {
         this.webView = builder.webView;
         this.javaToJsonConverter = builder.javaToJsonConverter;
         this.jsonToJavaConverter = builder.jsonToJavaConverter;
 
-        jsScripts = new ArrayList<>();
+        jsFiles = new ArrayList<>();
         scriptoAssetsJavaScriptReader = new ScriptoAssetsJavaScriptReader(webView.getContext());
 
         initWebView(builder);
@@ -53,7 +52,6 @@ public class Scripto {
         scriptoWebViewClient.setOnPageLoadedListener(new ScriptoWebViewClient.OnPageLoadedListener() {
             @Override
             public void onPageLoaded() {
-                loadScripto();
                 addJsScripts();
             }
         });
@@ -76,51 +74,37 @@ public class Scripto {
         }, "ScriptoPreparedListener");
     }
 
-    private void loadScripto() {
-        InputStream stream = Scripto.class.getResourceAsStream("/scripto.js");
-        String highlighterJsCode = new Scanner(stream, Charset.defaultCharset().name()).useDelimiter("\\A").next();
-        addJsScript(highlighterJsCode);
-    }
-
     private void addJsScripts() {
-        StringBuilder fullJsCodeBuilder = new StringBuilder();
+        StringBuilder jsScriptsListBuilder = new StringBuilder();
 
-        //собираем весь код в одну строку
-        for (int i = jsScripts.size() - 1; i >= 0; i--) {
-            fullJsCodeBuilder.append(jsScripts.get(i));
+        int scriptsCount = jsFiles.size();
+        //список с JS-файлами
+        for (int i = 0; i < scriptsCount; i++) {
+            jsScriptsListBuilder.append("\"").append(jsFiles.get(i)).append("\"");
+            if (i < scriptsCount - 1) {
+                jsScriptsListBuilder.append(", ");
+            }
         }
 
-        //оповещаем java-библиотеку, о готовности к работе
-        fullJsCodeBuilder.append("ScriptoPreparedListener.onScriptoPrepared();");
-
-        //вставляем весь код в блок head
-        String encodedJsCode = Base64.encodeToString(fullJsCodeBuilder.toString().getBytes(), Base64.NO_WRAP);
-        webView.loadUrl("javascript:(function() {" +
-                "   var head = document.getElementsByTagName('head').item(0);" +
-                "   var script = document.createElement('script');" +
-                "   script.type = 'text/javascript';" +
-                // Tell the browser to BASE64-decode the string into your script !!!
-                "   script.innerHTML = window.atob('" + encodedJsCode + "');" +
-                "   head.insertBefore(script, head.firstChild);" +
+        webView.loadUrl(
+                "javascript:(function() {" +
+                "   var jsFiles = [" + jsScriptsListBuilder.toString() + "];" +
+                "    " +
+                "   jsFiles.forEach(function(jsFile, i, jsFiles) {\n" +
+                "       var jsScript = document.createElement(\"script\");" +
+                "       jsScript.setAttribute(\"src\", jsFile);\n" +
+                "       document.head.appendChild(jsScript);" +
+                "   });" +
+                "   ScriptoPreparedListener.onScriptoPrepared();" + //оповещаем java-библиотеку, о готовности к работе
                 "})();");
     }
 
-    public void addJsScriptFromAssets(String filePath) {
-        String jsCode = scriptoAssetsJavaScriptReader.read(filePath);
-        if (jsCode == null) {
-            ScriptoException jsFileReadError = new ScriptoException(String.format("File %s in assets folder not found", filePath));
-            if (errorHandler != null) {
-                errorHandler.onError(jsFileReadError);
-            } else {
-                throw jsFileReadError;
-            }
-        } else {
-            addJsScript(jsCode);
-        }
+    public void addJsFile(String filePath) {
+        jsFiles.add(filePath);
     }
 
-    public void addJsScript(String jsCode) {
-        jsScripts.add(jsCode);
+    public void addJsFileFromAssets(String filePath) {
+        jsFiles.add(ASSETS_FOLDER_PATH + filePath);
     }
 
     /**

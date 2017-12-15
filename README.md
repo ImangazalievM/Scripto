@@ -6,17 +6,25 @@
 
 Library for easy call JS-functions from Java.
 
-# Setup
+## Setup
 
 ```gradle
-compile 'com.github.imangazalievm:scripto:2.0.1'
+compile 'com.github.imangazalievm:scripto:2.1.0"
 ```
 
-# Using the library
+## Using the library
+
+Firstly you must copy the ```scripto.js``` file from sample project into assets folder and initialize the library:
+
+```java
+WebView webView = ...;
+Scripto scripto = new Scripto.Builder(webView).build();
+scripto.addJsFileFromAssets("scripto.js");
+```
 
 ### Calling JS-functions from Java
 
-We have a JS-file with some functions:
+For example, we have file ```login.js``` with some functions:
 
 ```javascript
 function setLogin(login) {
@@ -28,7 +36,7 @@ function getLogin() {
 }
 ```
 
-To call a function we should create Java-interface with JS-functions description:
+To call a function we must create Java-interface with JS-functions description:
 
 ```java
 public interface LoginScript {
@@ -40,15 +48,15 @@ public interface LoginScript {
 }
 ```
 
-Methods should be return JavaScriptFunctionCall. In the parameters of JavaScriptFunctionCall we specify type of JS-function response. In our case the first function returns nothing (Void), and the second returns text (String).
+Methods must return JavaScriptFunctionCall. In the parameters of JavaScriptFunctionCall we specify type of JS-function response. In our case the first function returns nothing (Void), and the second returns text (String).
 
-Then we should link Java-interface and JS-file:
+Then we must link Java-interface and JS-file:
 ```java
-WebView webView = ...;
-Scripto scripto = new Scripto.Builder(webView).build();
+scripto.addJsFileFromAssets("login.js");
 LoginScript loginScript = scripto.create(LoginScript.class);
 ```
-Scripts should be linked to interfaces before the page is loaded.
+
+The scripts must be linked to the interfaces before the page is loaded.
 
 We can't use our script, because we need to wait for full page load. For this we need to set a listener:
 
@@ -136,8 +144,8 @@ showToastMessage("My super message");
 Just as in Java we can use callbacks:
 ```java
 public String showToastMessage(String text) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-        return "My super response";
+    Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    return "My super response";
 }
 ```
 
@@ -145,7 +153,7 @@ Calling the method from JavaScript:
 
 ```javascript
 showToastMessage("My super message", function(responseString) {
-        console.log(responseString);
+    console.log(responseString);
 });
 ```
 

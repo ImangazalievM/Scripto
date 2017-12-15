@@ -12,9 +12,17 @@ compile 'com.github.imangazalievm:scripto:2.0.1'
 
 # Использование библиотеки
 
+В первую очередь мы должны скопировать файл ```scripto.js``` из тестового проекта в папку assets вашего проекта и инициализировать библиотеку:
+
+```java
+WebView webView = ...;
+Scripto scripto = new Scripto.Builder(webView).build();
+scripto.addJsFileFromAssets("scripto.js");
+```
+
 ### Вызов JS-функций из Java
 
-У нас есть JS-файл с некоторыми функциями:
+Например, у нас есть файл ```login.js``` с некоторыми функциями:
 
 ```javascript
 function setLogin(login) {
@@ -41,9 +49,9 @@ public interface LoginScript {
 Методы обязательно должны возвращать JavaScriptFunctionCall. В параметрах JavaScriptFunctionCall мы указываем тип, возвращаемый JS-функцией. В нашем случае первая функция ничего не возвращает (Void), а вторая возвращает строку (String).
 
 Далее нам нужно связать Java-интерфейс и JS-файл:
+
 ```java
-WebView webView = ...;
-Scripto scripto = new Scripto.Builder(webView).build();
+scripto.addJsFileFromAssets("login.js");
 LoginScript loginScript = scripto.create(LoginScript.class);
 ```
 

@@ -1,10 +1,10 @@
 # Scripto
 
-![Scripto:: Elegant Java-Javascript bridge](art/Scripto.png)
+![Scripto: Elegant Java-Javascript bridge](art/Scripto.png)
 
 <p align="center">
-[![Download](https://api.bintray.com/packages/imangazaliev/maven/scripto/images/download.svg)](https://bintray.com/imangazaliev/maven/scripto/_latestVersion)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Scripto-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/3983)
+<a href="https://bintray.com/imangazaliev/maven/scripto/_latestVersion"><img alt="Download" src="https://api.bintray.com/packages/imangazaliev/maven/scripto/images/download.svg" /></a>
+<a href="https://android-arsenal.com/details/1/3983"><img alt="Android Arsenal" src="https://img.shields.io/badge/Android%20Arsenal-Scripto-brightgreen.svg?style=flat" /></a>
 </p>
 
 [Русская версия (Russian version)](README-RU.md)

@@ -1,5 +1,3 @@
-# Scripto
-
 ![Scripto: Elegant Java-Javascript bridge](art/Scripto.png)
 
 <p align="center">

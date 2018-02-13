@@ -22,7 +22,7 @@ android {
 }
 
 dependencies {
-    compile project(':lib')
+    compile project(':scripto')
 
     compile 'com.android.support:appcompat-v7:25.2.0'
 }

@@ -5,19 +5,40 @@
 <a href="https://android-arsenal.com/details/1/3983"><img alt="Android Arsenal" src="https://img.shields.io/badge/Android%20Arsenal-Scripto-brightgreen.svg?style=flat" /></a>
 </p>
 
+Android bridge for sending messages between Java and JavaScript in WebView.
+
 [Русская версия (Russian version)](README-RU.md)
 
-Android bridge for sending messages between Java and JavaScript in WebView.
+## Features
+
+- convenient call of JS-functions/Java-methods with parameters
+- call with callbacks support
+- error handling in JS execution
+- ability to transfer custom data types
+- switching code execution to a UI thread
+
+## Contents
+
+- [Setup](#setup)
+- [Usage](#usage)
+- [Calling JS-functions from Java](#calling-js-functions-from-java)
+- [Calling Java-methods from JavaScript](#calling-java-methods-from-javascript)
 
 ## Setup
 
+1. Provide the gradle dependency:
+
 ```gradle
-compile 'com.github.imangazalievm:scripto:2.1.1"
+compile 'com.github.imangazalievm:scripto:2.1.1'
 ```
 
-## Using the library
+2. Copy the `scripto.js` file from `sample-app\src\main\assets\scripto` into assets folder.
 
-Firstly you must copy the ```scripto.js``` file from sample project into assets folder and initialize the library:
+If you want to see usage examples of the library, see `sample-app` folder.
+
+## Usage
+
+Firstly, we need to initialize the library:
 
 ```java
 WebView webView = ...;
@@ -25,9 +46,10 @@ Scripto scripto = new Scripto.Builder(webView).build();
 scripto.addJsFileFromAssets("scripto.js");
 ```
 
+
 ### Calling JS-functions from Java
 
-For example, we have file ```login.js``` with some functions:
+1. For example, we have file ```login.js``` with some functions:
 
 ```javascript
 function setLogin(login) {
@@ -39,7 +61,7 @@ function getLogin() {
 }
 ```
 
-To call a function we must create Java-interface with JS-functions description:
+2. To call a function we must create Java-interface with JS-functions description:
 
 ```java
 public interface LoginScript {
@@ -53,15 +75,17 @@ public interface LoginScript {
 
 Methods must return JavaScriptFunctionCall. In the parameters of JavaScriptFunctionCall we specify type of JS-function response. In our case the first function returns nothing (Void), and the second returns text (String).
 
-Then we must link Java-interface and JS-file:
+3. Then we must link Java-interface and JS-file:
+
 ```java
 scripto.addJsFileFromAssets("login.js");
+
 LoginScript loginScript = scripto.create(LoginScript.class);
 ```
 
 The scripts must be linked to the interfaces before the page is loaded.
 
-We can't use our script, because we need to wait for full page load. For this we need to set a listener:
+4. We can't use our script, because we need to wait for full page load, and for this we need to set a listener:
 
 ```java
 scripto.onPrepared(new ScriptoPrepareListener() {
@@ -72,7 +96,7 @@ scripto.onPrepared(new ScriptoPrepareListener() {
 });
 ```
 
-To obtain data from a function use the following syntax:
+5. To obtain data from a function use the following syntax:
 
 ```java
 loginScript.getLogin()
@@ -104,7 +128,7 @@ loginScript.getJson()
 
 ### Calling Java-methods from JavaScript
 
-Calling Java-methods from JavaScript very similar to default JavaScriptInterface. Create Java-class, which will act as JS-inteface:
+1. Calling Java-methods from JavaScript very similar to default JavaScriptInterface. Create Java-class, which will act as JS-inteface:
 
 ```java
 public class AndroidInterface {
@@ -122,13 +146,13 @@ public class AndroidInterface {
 ```
 For correct work of JS-interface must not contain methods with the same name. Otherwisе library will throws an exception. Also we don't need to set ```@JavaScriptInterface``` annotation.
 
-Add interface:
+2. Add interface to Scripto:
 
 ```java
 scripto.addInterface("Android", new AndroidInterface(context));
 ```
 
-To call ```showToastMessage``` method we need to create JS-function with the same name:
+3. To call ```showToastMessage``` method we need to create JS-function with the same name:
 
 ```javascript
 function showToastMessage(text) {
@@ -144,7 +168,8 @@ Calling the method from JavaScript:
 showToastMessage("My super message");
 ```
 
-Just as in Java we can use callbacks:
+4. Just as in Java we can use callbacks:
+
 ```java
 public String showToastMessage(String text) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
@@ -162,6 +187,8 @@ showToastMessage("My super message", function(responseString) {
 
 If you want to pass  user-defined data type from JavaScript, convert your data to JSON via ```JSON.stringify(object)```.
 
+### Java methods call protection
+
 If you need to protect methods from an unauthorized call, then you can protect them  ```@JavaScriptSecure``` annotation:
 
 ```java
@@ -169,8 +196,7 @@ ScriptoInterfaceConfig config = new ScriptoInterfaceConfig().enableAnnotationPro
 scripto.addInterface("Android", new AndroidInterface(this), config);
 ```
 
-
-Do not forget to set an annotation on the method:
+Don't forget to set an annotation on the method:
 
 ```java
 @JavaScriptSecure

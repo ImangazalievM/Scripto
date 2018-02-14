@@ -10,7 +10,7 @@ Android-библиотека для отправки сообщений межд
 # Подключение библиотеки
 
 ```gradle
-compile 'com.github.imangazalievm:scripto:2.0.1'
+compile 'com.github.imangazalievm:scripto:2.1.1'
 ```
 
 # Использование библиотеки

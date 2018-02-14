@@ -12,7 +12,7 @@ Android bridge for sending messages between Java and JavaScript in WebView.
 ## Setup
 
 ```gradle
-compile 'com.github.imangazalievm:scripto:2.1.0"
+compile 'com.github.imangazalievm:scripto:2.1.1"
 ```
 
 ## Using the library

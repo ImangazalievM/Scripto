@@ -17,13 +17,6 @@ Android bridge for sending messages between Java and JavaScript in WebView.
 - ability to transfer custom data types
 - switching code execution to a UI thread
 
-## Contents
-
-- [Setup](#setup)
-- [Usage](#usage)
-- [Calling JS-functions from Java](#calling-js-functions-from-java)
-- [Calling Java-methods from JavaScript](#calling-java-methods-from-javascript)
-
 ## Setup
 
 1. Provide the gradle dependency:

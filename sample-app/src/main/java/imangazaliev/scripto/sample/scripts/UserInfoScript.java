@@ -6,8 +6,6 @@ import imangazaliev.scripto.sample.User;
 
 public interface UserInfoScript {
 
-    JavaScriptFunctionCall<Void> loadUserData();
-
     @JsFunctionName("getUserData")
     JavaScriptFunctionCall<User> getUser();
 

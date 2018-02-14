@@ -16,24 +16,22 @@ function saveUserData() {
 }
 
 function getUserData() {
-    var user = {};
-
     var nameField = document.getElementById('name_field');
     var surnameField = document.getElementById('surname_field');
     var ageField = document.getElementById('age_field');
     var heightField = document.getElementById('height_field');
     var marriedField = document.getElementById('married_checkbox');
 
-    user['name'] = nameField.value;
-    user['surname'] = surnameField.value;
-    user['age'] = ageField.value == "" ? 0 : ageField.value;
-    user['height'] = heightField.value == "" ? 0 : heightField.value;
-    user['married'] = marriedField.checked;
+    var user = {
+        name: nameField.value,
+        surname: surnameField.value,
+        age: ageField.value != "" ? ageField.value : 0,
+        height: heightField.value != "" ? heightField.value : 0,
+        married: marriedField.checked
+
+    };
 
     return JSON.stringify(user);
 }
 
-//после того, как Scripto готово
-document.addEventListener('ScriptoPrepared', function() {
-    loadUserData();
-}, false);
+loadUserData();

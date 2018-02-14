@@ -1,5 +1,7 @@
-function AndroidInterface() {}
+var AndroidInterface = {
 
-AndroidInterface.showToastMessage = function(text) {
-  Scripto.call('Android', arguments);
-};
+    showToastMessage: function(text) {
+         Scripto.call('Android', arguments);
+    }
+
+}

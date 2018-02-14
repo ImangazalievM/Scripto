@@ -49,10 +49,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
         scripto.onPrepared(new ScriptoPrepareListener() {
             @Override
             public void onScriptoPrepared() {
-                userInfoScript.loadUserData();
+                Log.d("Scripto", "Scripto is prepared");
             }
         });
 
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void getUserData(View view) {
+    public void showUserInfo(View view) {
         userInfoScript.getUser()
                 .onResponse(new JavaScriptCallResponseCallback<User>() {
                     @Override
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 }).onError(new JavaScriptCallErrorCallback() {
             @Override
             public void onError(ScriptoException error) {
-                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "User info load error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }).call();
     }

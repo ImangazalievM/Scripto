@@ -34,7 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyNew;
 public class ScriptoProxyTest extends BaseTestPowerMock {
 
     private final String proxyId = "adrgb";
-    private final String callCode = "26486";
+    private final String callId = "26486";
     private final Object[] args = new Object[] {"My text", 55, true, null};
     private final String jsResponse = "My js response";
     private final String convertedJsResponse = "My  converted response";
@@ -80,7 +80,7 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
 
     private void initPowerMockito() throws Exception {
         PowerMockito.when(StringUtils.randomString(5)).thenReturn(proxyId);
-        PowerMockito.when(StringUtils.randomNumericString(5)).thenReturn(callCode);
+        PowerMockito.when(StringUtils.randomNumericString(5)).thenReturn(callId);
         PowerMockito.when(ScriptoUtils.getCallResponseType(methodGetName)).thenAnswer(new Answer<Class<String>>() {
             @Override
             public Class<String> answer(InvocationOnMock invocation) throws Throwable {
@@ -115,10 +115,10 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
         JavaScriptFunctionCall<String> call = (JavaScriptFunctionCall<String>) scriptoProxy.invoke(null, methodGetName, args);
 
         verify(webview).addJavascriptInterface(scriptoProxy, proxyId);
-        verify(mJavaScriptFunction, never()).callJavaScriptFunction(callCode);
+        verify(mJavaScriptFunction, never()).callJavaScriptFunction(callId);
 
         call.call();
-        verify(mJavaScriptFunction).callJavaScriptFunction(callCode);
+        verify(mJavaScriptFunction).callJavaScriptFunction(callId);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
         call.onResponse(callback);
         call.call();
 
-        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callCode, jsResponse);
+        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callId, jsResponse);
         verify(callback).onResponse(convertedJsResponse);
     }
 
@@ -143,8 +143,8 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
         call.onResponse(callback);
         call.call();
 
-        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callCode, jsResponse);
-        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callCode, jsResponse);
+        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callId, jsResponse);
+        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callId, jsResponse);
 
         verify(callback).onResponse(convertedJsResponse);
     }
@@ -158,7 +158,7 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
         call.onResponse(callback);
         call.call();
 
-        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callCode, null);
+        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callId, null);
 
         verify(callback).onResponse(null);
     }
@@ -173,7 +173,7 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
         call.onResponse(callback);
         call.call();
 
-        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callCode, jsResponse);
+        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callId, jsResponse);
 
         verify(callback).onResponse(rawResponse);
     }
@@ -188,7 +188,7 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
         call.onResponse(callback);
         call.call();
 
-        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callCode, jsonResponse);
+        Whitebox.invokeMethod(scriptoProxy, "onCallbackResponseUi", callId, jsonResponse);
 
         verify(callback).onResponse(customTestModel);
     }
@@ -204,7 +204,7 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
         call.onError(callback);
         call.call();
 
-        Whitebox.invokeMethod(scriptoProxy, "onCallbackErrorUi", callCode, jsErrorMessage);
+        Whitebox.invokeMethod(scriptoProxy, "onCallbackErrorUi", callId, jsErrorMessage);
         verify(callback).onError(jsException);
     }
 
@@ -218,8 +218,8 @@ public class ScriptoProxyTest extends BaseTestPowerMock {
         call.onError(callback);
         call.call();
 
-        Whitebox.invokeMethod(scriptoProxy, "onCallbackErrorUi", callCode, jsErrorMessage);
-        Whitebox.invokeMethod(scriptoProxy, "onCallbackErrorUi", callCode, jsErrorMessage);
+        Whitebox.invokeMethod(scriptoProxy, "onCallbackErrorUi", callId, jsErrorMessage);
+        Whitebox.invokeMethod(scriptoProxy, "onCallbackErrorUi", callId, jsErrorMessage);
 
         verify(callback).onError(jsException);
     }

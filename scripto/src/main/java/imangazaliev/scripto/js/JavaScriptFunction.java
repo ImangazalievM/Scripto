@@ -5,15 +5,15 @@ import java.lang.reflect.Method;
 import imangazaliev.scripto.Scripto;
 
 /**
- * Вызывает JavaScript функции
+ * Calls JavaScript functions from Java
  */
-public class JavaScriptFunction {
+class JavaScriptFunction {
 
     private Scripto scripto;
     private final String proxyId;
     final String jsFunction;
 
-    public JavaScriptFunction(Scripto scripto, String jsVariableName, Method method, Object[] args, String proxyId) {
+    JavaScriptFunction(Scripto scripto, String jsVariableName, Method method, Object[] args, String proxyId) {
         this.scripto = scripto;
         this.proxyId = proxyId;
         this.jsFunction = buildJavaScriptFunctionCall(jsVariableName, method, args);
@@ -24,11 +24,11 @@ public class JavaScriptFunction {
     }
 
     /**
-     * Строит строку вызова JS-функции
+     * Constructs a string to JS-function
      *
-     * @param method - название функции
-     * @param args   - аогументы функции
-     * @return JS-код вызова функции с аргументами
+     * @param method - JS-function name
+     * @param args   - JS-function arguments
+     * @return JS-code of function call with arguments
      */
     private String buildJavaScriptFunctionCall(String jsVariableName, Method method, Object[] args) {
         //если функция имеет callback убираем его из аргументов
@@ -38,14 +38,14 @@ public class JavaScriptFunction {
         String functionCall = String.format(functionTemplate, getFunctionName(method), arguments.getFormattedArguments());
 
         //если аннотация есть на методе, то аннотацию на классе мы ее не учитываем
-        jsVariableName = (method.isAnnotationPresent(JsVariableName.class)) ? getObjectName(method) : jsVariableName;
+        jsVariableName = (method.isAnnotationPresent(JsVariableName.class)) ? getVariableName(method) : jsVariableName;
         //если аннотация есть на классе или методе, присоединяем имя переменной через точку
         functionCall = (jsVariableName != null) ? String.format("%s.%s", jsVariableName, functionCall) : functionCall;
         return functionCall;
     }
 
-    private String getObjectName(Method method) {
-        return method.isAnnotationPresent(JsVariableName.class) ? method.getAnnotation(JsVariableName.class).value() : null;
+    private String getVariableName(Method method) {
+        return method.getAnnotation(JsVariableName.class).value();
     }
 
     private String getFunctionName(Method method) {
@@ -53,18 +53,18 @@ public class JavaScriptFunction {
     }
 
     /**
-     * Формирует JS-код вызова функции и запускает его
+     * Forms JS-code to call a function and run it
      *
-     * @param callCode - код коллбека
+     * @param callId - unique identifier of call
      */
-    public void callJavaScriptFunction(String callCode) {
+    public void callJavaScriptFunction(String callId) {
         String jsCall = "javascript:"
                 + "(function(){"
                 + "	 try {"
                 + "		var response = " + jsFunction
-                +       proxyId + ".onCallbackResponse('" + callCode + "', response);"
+                +       proxyId + ".onCallbackResponse('" + callId + "', response);"
                 + "	 } catch (err) {"
-                +       proxyId + ".onCallbackError('" + callCode + "', err.message);"
+                +       proxyId + ".onCallbackError('" + callId + "', err.message);"
                 + "	 }"
                 + "})();";
         scripto.getWebView().loadUrl(jsCall);

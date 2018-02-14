@@ -4,7 +4,7 @@ public class RawResponse {
 
     private String response;
 
-    public RawResponse(String response) {
+    RawResponse(String response) {
         this.response = response;
     }
 

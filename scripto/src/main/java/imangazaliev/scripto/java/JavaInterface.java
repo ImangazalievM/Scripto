@@ -1,6 +1,5 @@
 package imangazaliev.scripto.java;
 
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +13,7 @@ import imangazaliev.scripto.utils.ScriptoLogUtils;
 import imangazaliev.scripto.utils.ScriptoUtils;
 
 /**
- * Интерфейс для вызова методов из JavaScript
+ * Calls Java methods from JavaScript
  */
 public class JavaInterface {
 

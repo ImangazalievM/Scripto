@@ -25,7 +25,7 @@ public class ScriptoProxy implements InvocationHandler {
         this.scripto = scripto;
         this.jsVariableName = getJsVariableName(scriptClass);
 
-        functionCalls = new HashMap();
+        functionCalls = new HashMap<>();
         proxyId = StringUtils.randomString(5);
 
         //добавляем себя как интерфейс для приема коллбеков от JS
@@ -45,10 +45,10 @@ public class ScriptoProxy implements InvocationHandler {
 
         JavaScriptFunction javaScriptFunction = new JavaScriptFunction(scripto, jsVariableName, method, args, proxyId);
         Class<?> returnType = ScriptoUtils.getCallResponseType(method);
-        String callCode = StringUtils.randomNumericString(5);
+        String callId = StringUtils.randomNumericString(5);
 
-        JavaScriptFunctionCall javaScriptFunctionCall = new JavaScriptFunctionCall(javaScriptFunction, returnType, callCode);
-        functionCalls.put(callCode, javaScriptFunctionCall);
+        JavaScriptFunctionCall javaScriptFunctionCall = new JavaScriptFunctionCall(javaScriptFunction, returnType, callId);
+        functionCalls.put(callId, javaScriptFunctionCall);
 
         return javaScriptFunctionCall;
     }

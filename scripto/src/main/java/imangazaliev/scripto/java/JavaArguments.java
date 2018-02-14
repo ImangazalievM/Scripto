@@ -3,14 +3,14 @@ package imangazaliev.scripto.java;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-public class JavaArguments {
+class JavaArguments {
 
     private String raw;
     private JSONArray jsonArgsArray;
     private Class<?>[] argsTypes;
     private Object[] argsObjects;
 
-    public JavaArguments(String jsonArgs) {
+    JavaArguments(String jsonArgs) {
         try {
             this.jsonArgsArray = new JSONArray(jsonArgs);
         } catch (JSONException e) {

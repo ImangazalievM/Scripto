@@ -4,18 +4,18 @@ import imangazaliev.scripto.Scripto;
 import imangazaliev.scripto.converter.JavaToJsonConverter;
 import imangazaliev.scripto.utils.ScriptoUtils;
 
-public class JavaScriptArguments {
+class JavaScriptArguments {
 
     private Scripto scripto;
     private String[] stringArgs;
 
-    public JavaScriptArguments(Scripto scripto, Object[] argsObjects) {
+    JavaScriptArguments(Scripto scripto, Object[] argsObjects) {
         this.scripto = scripto;
         this.stringArgs = initArgs(argsObjects);
     }
 
     private String[] initArgs(Object[] argsObjects) {
-        //функция была вызвана без аргументов
+        //the function was called without arguments
         if (argsObjects == null) {
             return new String[0];
         }

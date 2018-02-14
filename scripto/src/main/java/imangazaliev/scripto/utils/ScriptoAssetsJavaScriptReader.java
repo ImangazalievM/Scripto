@@ -24,9 +24,9 @@ public class ScriptoAssetsJavaScriptReader {
     }
 
     /**
-     * Читает текстовый файл из assets
+     * Reads a text file from assets
      *
-     * @return Содержимое текстового файла
+     * @return Contents of the text file
      */
     public String read(String filePath) throws IllegalArgumentException {
         if (filePath == null) {

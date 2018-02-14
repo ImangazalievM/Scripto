@@ -1,6 +1,5 @@
 package imangazaliev.scripto;
 
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
@@ -16,7 +15,7 @@ import imangazaliev.scripto.utils.ScriptoAssetsJavaScriptReader;
 import imangazaliev.scripto.utils.ScriptoUtils;
 
 /**
- * Создает прокси для JS-скриптов. Добавляет JavaScript интерфейсы
+ * Creates proxy objects for JS-scripts. Adds JavaScript interfaces.
  */
 public class Scripto {
 
@@ -58,7 +57,7 @@ public class Scripto {
         webView.setWebViewClient(scriptoWebViewClient);
 
         webView.getSettings().setJavaScriptEnabled(true);
-        //ждем команду от JS о готовности к работе
+        //waits for the Scripto's readiness to work
         webView.addJavascriptInterface(new Object() {
             @JavascriptInterface
             public void onScriptoPrepared() {
@@ -78,10 +77,11 @@ public class Scripto {
         StringBuilder jsScriptsListBuilder = new StringBuilder();
 
         int scriptsCount = jsFiles.size();
-        //список с JS-файлами
+        //list of JS-file
         for (int i = 0; i < scriptsCount; i++) {
             jsScriptsListBuilder.append("\"").append(jsFiles.get(i)).append("\"");
-            if (i < scriptsCount - 1) {
+            boolean isLasElement = i < scriptsCount - 1;
+            if (isLasElement) {
                 jsScriptsListBuilder.append(", ");
             }
         }
@@ -90,12 +90,12 @@ public class Scripto {
                 "javascript:(function() {" +
                 "   var jsFiles = [" + jsScriptsListBuilder.toString() + "];" +
                 "    " +
-                "   jsFiles.forEach(function(jsFile, i, jsFiles) {\n" +
+                "   jsFiles.forEach(function(jsFile, i, jsFiles) {" +
                 "       var jsScript = document.createElement(\"script\");" +
-                "       jsScript.setAttribute(\"src\", jsFile);\n" +
+                "       jsScript.setAttribute(\"src\", jsFile);" +
                 "       document.head.appendChild(jsScript);" +
                 "   });" +
-                "   ScriptoPreparedListener.onScriptoPrepared();" + //оповещаем java-библиотеку, о готовности к работе
+                "   ScriptoPreparedListener.onScriptoPrepared();" + //notify java-library about readiness for work
                 "})();");
     }
 

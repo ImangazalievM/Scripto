@@ -3,7 +3,7 @@ package imangazaliev.scripto.js;
 public class JavaScriptFunctionCall<T> {
 
     private JavaScriptFunction javaScriptFunction;
-    private String callCode;
+    private String callId;
 
     private JavaScriptCallResponseCallback<T> responseCallback;
     private JavaScriptCallErrorCallback errorCallback;
@@ -11,10 +11,10 @@ public class JavaScriptFunctionCall<T> {
 
     private boolean throwOnError;
 
-    public JavaScriptFunctionCall(JavaScriptFunction javaScriptFunction, Class<T> responseType, String callCode) {
+    JavaScriptFunctionCall(JavaScriptFunction javaScriptFunction, Class<T> responseType, String callId) {
         this.javaScriptFunction = javaScriptFunction;
         this.responseType = responseType;
-        this.callCode = callCode;
+        this.callId = callId;
         this.throwOnError = false;
     }
 
@@ -41,10 +41,10 @@ public class JavaScriptFunctionCall<T> {
     }
 
     /**
-     * Выбрасывать исключение при ошибке в JS или нет, если нет callback'а для ошибкм
+     * To throw an exception at an error in JS or not, if there is no callback for errors
      */
-    public JavaScriptFunctionCall<T> throwOnError(boolean throwOnEror) {
-        this.throwOnError = throwOnEror;
+    public JavaScriptFunctionCall<T> throwOnError(boolean throwOnError) {
+        this.throwOnError = throwOnError;
         return this;
     }
 
@@ -57,7 +57,7 @@ public class JavaScriptFunctionCall<T> {
     }
 
     public void call() {
-        javaScriptFunction.callJavaScriptFunction(callCode);
+        javaScriptFunction.callJavaScriptFunction(callId);
     }
 
 }

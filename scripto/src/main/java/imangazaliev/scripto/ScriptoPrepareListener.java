@@ -1,7 +1,7 @@
 package imangazaliev.scripto;
 
 /**
- * Слушатель загрузки HTML-документы
+ * Listener readiness Scripto to work
  */
 public interface ScriptoPrepareListener {
 

@@ -182,14 +182,14 @@ If you want to pass  user-defined data type from JavaScript, convert your data t
 
 ### Java methods call protection
 
-If you need to protect methods from an unauthorized call, then you can protect them  ```@JavaScriptSecure``` annotation:
+If you need to protect methods from an unauthorized call, then you can protect them with the ```@JavaScriptSecure``` annotation:
 
 ```java
 ScriptoInterfaceConfig config = new ScriptoInterfaceConfig().enableAnnotationProtection(true);
 scripto.addInterface("Android", new AndroidInterface(this), config);
 ```
 
-Don't forget to set an annotation on the method:
+Don't forget to set the annotation on the method:
 
 ```java
 @JavaScriptSecure

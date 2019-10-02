@@ -137,7 +137,7 @@ public class AndroidInterface {
     }
 }
 ```
-For correct work of JS-interface must not contain methods with the same name. Otherwisе library will throws an exception. Also we don't need to set ```@JavaScriptInterface``` annotation.
+For correct work JS-interface must not contain methods with the same name. Otherwisе library will throws an exception. Also we don't need to set ```@JavaScriptInterface``` annotation.
 
 2. Add interface to Scripto:
 
